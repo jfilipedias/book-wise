@@ -2,10 +2,6 @@ import { createStitches } from '@stitches/react'
 
 export const { styled, getCssText, globalCss } = createStitches({
   theme: {
-    fonts: {
-      default: 'var(--font-nunito), sans-serif',
-    },
-
     space: {
       px: '1px',
       1: '0.25rem',
@@ -30,7 +26,6 @@ export const { styled, getCssText, globalCss } = createStitches({
 
     fontWeights: {
       regular: '400',
-      medium: '500',
       bold: '700',
     },
 

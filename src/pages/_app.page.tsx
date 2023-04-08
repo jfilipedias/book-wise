@@ -1,17 +1,14 @@
 import type { AppProps } from 'next/app'
-import { Nunito } from 'next/font/google'
+import { Nunito_Sans } from 'next/font/google'
 import { globalStyles } from '@/styles/global'
 
-const nunito = Nunito({
-  subsets: ['latin'],
-  variable: '--font-nunito',
-})
+const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${nunito.variable}`}>
+    <div className={nunitoSans.className}>
       <Component {...pageProps} />
     </div>
   )
