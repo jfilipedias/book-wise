@@ -1,3 +1,3 @@
-export default function Home() {
-  return <h1>BookWise</h1>
-}
+import { Home } from './home/index.page'
+
+export default Home
