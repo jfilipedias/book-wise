@@ -1,5 +1,15 @@
 import Image from 'next/image'
-import { Container, Hero, LoginContainer } from './styles'
+import GoogleIcon from '@/assets/icons/google-icon.svg'
+import GitHubIcon from '@/assets/icons/github-icon.svg'
+import RocketIcon from '@/assets/icons/rocket-icon.svg'
+import {
+  Button,
+  Container,
+  Hero,
+  LoginContainer,
+  LoginOptions,
+  WelcomeContainer,
+} from './styles'
 
 export function Home() {
   return (
@@ -13,7 +23,29 @@ export function Home() {
         />
       </Hero>
 
-      <LoginContainer></LoginContainer>
+      <LoginContainer>
+        <WelcomeContainer>
+          <h1>Boas Vindas!</h1>
+          <span>Faça seu login ou acesse como visitante.</span>
+        </WelcomeContainer>
+
+        <LoginOptions>
+          <Button>
+            <Image src={GoogleIcon} alt="Icone do Google" />
+            Entrar com o Google
+          </Button>
+
+          <Button>
+            <Image src={GitHubIcon} alt="Icone do GitHub" />
+            Entrar com o GitHub
+          </Button>
+
+          <Button>
+            <Image src={RocketIcon} alt="Icone de foguete" />
+            Acessar como visitante
+          </Button>
+        </LoginOptions>
+      </LoginContainer>
     </Container>
   )
 }
