@@ -2,6 +2,10 @@
   "name": "book-wise",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -19,9 +23,12 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.7",
+    "prisma": "^4.12.0",
+    "tsx": "^3.12.6",
     "typescript": "5.0.3"
   },
   "dependencies": {
+    "@prisma/client": "^4.12.0",
     "@stitches/react": "^1.2.8",
     "next": "13.2.4",
     "react": "18.2.0",
