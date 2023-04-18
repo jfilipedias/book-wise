@@ -28,6 +28,7 @@ export const Navbar = styled('nav', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$4',
+  minWidth: 100,
 })
 
 export const Login = styled(Link, {
