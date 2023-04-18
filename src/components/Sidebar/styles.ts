@@ -33,7 +33,6 @@ export const Navbar = styled('nav', {
 
 export const Login = styled(Link, {
   display: 'flex',
+  alignItems: 'center',
   gap: '$3',
-  color: '$gray200',
-  textDecoration: 'none',
 })

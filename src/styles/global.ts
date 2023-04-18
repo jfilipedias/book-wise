@@ -12,4 +12,9 @@ export const globalStyles = globalCss({
     color: '$gray100',
     '--webkit-font-smoothing': 'antialiased',
   },
+
+  a: {
+    textDecoration: 'none',
+    color: '$gray200',
+  },
 })
