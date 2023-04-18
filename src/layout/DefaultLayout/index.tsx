@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { Sidebar } from '@/components/Sidebar'
-import { Container } from './styles'
+import { Container, Content } from './styles'
 
 interface DefaultLayoutProps {
   children: ReactNode | ReactNode[]
@@ -10,7 +10,7 @@ export function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <Container>
       <Sidebar />
-      <main>{children}</main>
+      <Content>{children}</Content>
     </Container>
   )
 }
