@@ -1,9 +1,16 @@
+import { ReactNode } from 'react'
 import { Sidebar } from '@/components/Sidebar'
+import { Container } from './styles'
 
-export function DefaultLayout() {
+interface DefaultLayoutProps {
+  children: ReactNode | ReactNode[]
+}
+
+export function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
-    <div>
-      <Sidebar></Sidebar>
-    </div>
+    <Container>
+      <Sidebar />
+      <main>{children}</main>
+    </Container>
   )
 }
