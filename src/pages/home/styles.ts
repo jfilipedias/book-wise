@@ -1,0 +1,48 @@
+import { styled } from '@/styles/stitches.config'
+
+export const Container = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+})
+
+export const Header = styled('header', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$3',
+
+  h1: {
+    fontSize: '$2xl',
+    fontWeight: '$bold',
+  },
+})
+
+export const Content = styled('main', {
+  display: 'flex',
+  gap: 64,
+})
+
+const Section = styled('section', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$4',
+})
+
+export const Feed = styled(Section, {
+  flexGrow: 1,
+})
+
+export const SideList = styled(Section, {
+  width: 324,
+})
+
+export const SectionTitle = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  h2: {
+    fontSize: '$sm',
+    fontWeight: '$regular',
+  },
+})
