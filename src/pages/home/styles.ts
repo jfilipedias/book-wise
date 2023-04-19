@@ -33,7 +33,7 @@ export const Feed = styled(Section, {
 })
 
 export const SideList = styled(Section, {
-  width: 324,
+  minWidth: 324,
 })
 
 export const SectionTitle = styled('div', {
