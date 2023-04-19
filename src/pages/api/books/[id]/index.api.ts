@@ -22,19 +22,6 @@ export default async function handler(
           },
         },
       },
-      ratings: {
-        select: {
-          rate: true,
-          description: true,
-          created_at: true,
-          user: {
-            select: {
-              name: true,
-              avatar_url: true,
-            },
-          },
-        },
-      },
     },
     where: {
       id,
