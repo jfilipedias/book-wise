@@ -1,7 +1,8 @@
-import Link from 'next/link'
 import { CaretRight, ChartLineUp } from '@phosphor-icons/react'
 import { ActionLink } from '@/components/ActionLink'
 import { DefaultLayout } from '@/layout/DefaultLayout'
+import { RatingList } from './components/RatingList'
+import { RecommendationList } from './components/RecommendationList'
 import {
   Content,
   Feed,
@@ -25,7 +26,7 @@ export function Home() {
               <h2>Avaliações mais recentes</h2>
             </SectionTitle>
 
-            <div></div>
+            <RatingList />
           </Feed>
 
           <SideList>
@@ -37,7 +38,7 @@ export function Home() {
               </ActionLink>
             </SectionTitle>
 
-            <div></div>
+            <RecommendationList />
           </SideList>
         </Content>
       </Container>
