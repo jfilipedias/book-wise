@@ -14,7 +14,7 @@ export const Container = styled('aside', {
   margin: '$5',
   padding: '$10',
   background: `url(${SidebarBackgroundImage.src}) no-repeat`,
-  borderRadius: '$md',
+  borderRadius: '$lg',
 
   section: {
     display: 'flex',
