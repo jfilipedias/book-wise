@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Avatar } from '@/components/Avatar'
 import { Card } from '@/components/Card'
 import { api } from '@/lib/axios'
+import { formatDateDistanceToNow, formatDateToString } from '@/utils/date'
 import {
   BookInfos,
   ListContainer,
@@ -52,7 +53,12 @@ export function RatingList() {
 
               <UserData>
                 <span>{rating.user.name}</span>
-                <time>{rating.created_at}</time>
+                <time
+                  title={formatDateToString(new Date(rating.created_at))}
+                  dateTime={new Date(rating.created_at).toISOString()}
+                >
+                  {formatDateDistanceToNow(new Date(rating.created_at))}
+                </time>
               </UserData>
 
               <div>{rating.rate}</div>
