@@ -11,7 +11,7 @@ export const Card = styled('div', {
   },
 
   variants: {
-    sizes: {
+    size: {
       sm: {
         maxWidth: 324,
         padding: '$5 $4',
@@ -33,6 +33,6 @@ export const Card = styled('div', {
   },
 
   defaultVariants: {
-    sizes: 'lg',
+    size: 'lg',
   },
 })
