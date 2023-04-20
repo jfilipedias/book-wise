@@ -3,7 +3,15 @@ import { useQuery } from '@tanstack/react-query'
 import { Avatar } from '@/components/Avatar'
 import { Card } from '@/components/Card'
 import { api } from '@/lib/axios'
-import { Container } from './styles'
+import {
+  BookInfos,
+  ListContainer,
+  RatingBody,
+  RatingBodyContent,
+  RatingContainer,
+  RatingHeader,
+  UserData,
+} from './styles'
 
 interface Rating {
   id: string
@@ -30,29 +38,46 @@ export function RatingList() {
   })
 
   return (
-    <Container>
+    <ListContainer>
       {data?.map((rating) => (
         <Card key={rating.id}>
-          <div>
-            <div>
+          <RatingContainer>
+            <RatingHeader>
               <Avatar
                 src={rating.user.avatar_url}
                 alt={rating.user.name}
                 width={40}
                 height={40}
               />
-              <div>
+
+              <UserData>
                 <span>{rating.user.name}</span>
-                <span>{rating.created_at}</span>
-              </div>
-            </div>
+                <time>{rating.created_at}</time>
+              </UserData>
 
-            <span>{rating.rate}</span>
-          </div>
+              <div>{rating.rate}</div>
+            </RatingHeader>
 
-          <div></div>
+            <RatingBody>
+              <Image
+                src={rating.book.cover_url}
+                alt={rating.book.name}
+                width={108}
+                height={152}
+              />
+
+              <RatingBodyContent>
+                <BookInfos>
+                  <strong>{rating.book.name}</strong>
+                  <span>{rating.book.author}</span>
+                </BookInfos>
+
+                <p>{rating.description}</p>
+              </RatingBodyContent>
+            </RatingBody>
+          </RatingContainer>
         </Card>
       ))}
-    </Container>
+    </ListContainer>
   )
 }
