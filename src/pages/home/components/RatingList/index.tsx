@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Avatar } from '@/components/Avatar'
 import { Card } from '@/components/Card'
+import { RatingStart } from '@/components/RatingStars'
 import { api } from '@/lib/axios'
 import { formatDateDistanceToNow, formatDateToString } from '@/utils/date'
 import {
@@ -61,7 +62,7 @@ export function RatingList() {
                 </time>
               </UserData>
 
-              <div>{rating.rate}</div>
+              <RatingStart rate={rating.rate} />
             </RatingHeader>
 
             <RatingBody>
