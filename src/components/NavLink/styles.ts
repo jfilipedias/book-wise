@@ -1,10 +1,6 @@
 import Link from 'next/link'
 import { styled } from '@/styles/stitches.config'
 
-interface LinkContainerProps {
-  isActive: boolean
-}
-
 export const LinkContainer = styled(Link, {
   position: 'relative',
   display: 'flex',
