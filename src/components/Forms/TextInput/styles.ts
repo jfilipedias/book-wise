@@ -3,6 +3,7 @@ import { styled } from '@/styles/stitches.config'
 export const FieldContainer = styled('div', {
   display: 'flex',
   alignItems: 'center',
+  minWidth: 430,
   padding: '$3 $5',
   boxSizing: 'border-box',
   border: '2px solid $gray500',
