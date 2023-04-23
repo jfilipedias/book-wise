@@ -1,6 +1,6 @@
 import { styled } from '@/styles/stitches.config'
 
-export const FieldContainer = styled('div', {
+export const Root = styled('div', {
   display: 'flex',
   alignItems: 'center',
   minWidth: 430,
@@ -8,12 +8,6 @@ export const FieldContainer = styled('div', {
   boxSizing: 'border-box',
   border: '2px solid $gray500',
   borderRadius: '$sm',
-
-  svg: {
-    width: 20,
-    height: 20,
-    color: '$gray500',
-  },
 
   '&:focus-within': {
     borderColor: '$green200',
@@ -51,4 +45,10 @@ export const Input = styled('input', {
   },
 })
 
-export const IconContainer = styled('div', {})
+export const Icon = styled('div', {
+  svg: {
+    width: 20,
+    height: 20,
+    color: '$gray500',
+  },
+})
