@@ -1,10 +1,22 @@
 import { InferGetStaticPropsType } from 'next'
-import { Binoculars, MagnifyingGlass, Radio } from '@phosphor-icons/react'
-import { DefaultLayout } from '@/layout/DefaultLayout'
+import Image from 'next/image'
+import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
+import { useQuery } from '@tanstack/react-query'
+import { Card } from '@/components/Card'
 import { RadioGroup } from '@/components/Forms/RadioGroup'
 import { TextInput } from '@/components/Forms/TextInput'
+import { RatingStart } from '@/components/RatingStars'
+import { DefaultLayout } from '@/layout/DefaultLayout'
 import { api } from '@/lib/axios'
-import { Container, Header, SearchForm } from './styles'
+import {
+  BookContainer,
+  BookContent,
+  BookInfos,
+  Container,
+  Header,
+  ListContainer,
+  SearchForm,
+} from './styles'
 
 interface Category {
   id: string
@@ -30,9 +42,24 @@ export const getStaticProps = async () => {
   }
 }
 
+interface Book {
+  id: string
+  author: string
+  cover_url: string
+  name: string
+  ratings: {
+    rate: number
+  }[]
+}
+
 export default function Explore({
   categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { data } = useQuery<Book[]>(['books'], async () => {
+    const response = await api.get('/books')
+    return response.data
+  })
+
   return (
     <DefaultLayout>
       <Container>
@@ -59,6 +86,37 @@ export default function Explore({
             ))}
           </RadioGroup.Root>
         </SearchForm>
+
+        <ListContainer>
+          {data?.map((book) => (
+            <Card key={book.id} size="sm">
+              <BookContainer>
+                <Image
+                  src={book.cover_url}
+                  alt={book.name}
+                  width={108}
+                  height={152}
+                />
+
+                <BookContent>
+                  <BookInfos>
+                    <strong>{book.name}</strong>
+                    <span>{book.author}</span>
+                  </BookInfos>
+
+                  <RatingStart
+                    rate={
+                      book.ratings.reduce(
+                        (acc, rating) => acc + rating.rate,
+                        0,
+                      ) / book.ratings.length
+                    }
+                  />
+                </BookContent>
+              </BookContainer>
+            </Card>
+          ))}
+        </ListContainer>
       </Container>
     </DefaultLayout>
   )

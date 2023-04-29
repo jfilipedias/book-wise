@@ -13,7 +13,6 @@ export const Card = styled('div', {
   variants: {
     size: {
       sm: {
-        maxWidth: 324,
         padding: '$5 $4',
       },
       lg: {
