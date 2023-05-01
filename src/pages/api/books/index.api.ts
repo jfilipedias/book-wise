@@ -9,6 +9,42 @@ export default async function handler(
     return res.status(405).end()
   }
 
+  const search = req.query.search ? String(req.query.search) : ''
+  const categoryId = req.query.categoryId ? String(req.query.categoryId) : ''
+
+  const where = {
+    AND: [{}],
+  }
+
+  if (search) {
+    where.AND.push({
+      OR: [
+        {
+          name: {
+            contains: search,
+          },
+        },
+        {
+          author: {
+            contains: search,
+          },
+        },
+      ],
+    })
+  }
+
+  if (categoryId) {
+    where.AND.push({
+      categories: {
+        some: {
+          category: {
+            id: categoryId,
+          },
+        },
+      },
+    })
+  }
+
   const books = await prisma.book.findMany({
     select: {
       id: true,
@@ -21,6 +57,7 @@ export default async function handler(
         },
       },
     },
+    where,
   })
 
   return res.status(200).json(books)

@@ -6,13 +6,13 @@ export const Container = styled('div', {
   gap: 48,
 })
 
-export const SearchForm = styled('form', {
+export const Header = styled('header', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$10',
 })
 
-export const Header = styled('header', {
+export const Search = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '$3',

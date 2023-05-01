@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next'
 import Image from 'next/image'
+import { ChangeEvent, useState } from 'react'
 import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/Card'
@@ -15,7 +16,7 @@ import {
   Container,
   Header,
   ListContainer,
-  SearchForm,
+  Search,
 } from './styles'
 
 interface Category {
@@ -55,37 +56,73 @@ interface Book {
 export default function Explore({
   categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { data } = useQuery<Book[]>(['books'], async () => {
-    const response = await api.get('/books')
-    return response.data
-  })
+  const allCategoriesValue = 'Todos'
+
+  const [selectedCategory, setSelectedCategory] = useState(allCategoriesValue)
+  const [search, setSearch] = useState('')
+
+  const { data } = useQuery<Book[]>(
+    ['books', selectedCategory, search],
+    async () => {
+      const params = new URLSearchParams()
+
+      if (selectedCategory !== allCategoriesValue) {
+        params.append('categoryId', selectedCategory)
+      }
+
+      if (!!search) {
+        params.append('search', search)
+      }
+
+      const response = await api.get('/books', { params })
+      return response.data
+    },
+  )
+
+  function handleSelectedCategoryChange(value: string) {
+    setSelectedCategory(value)
+  }
+
+  function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+  }
 
   return (
     <DefaultLayout>
       <Container>
-        <SearchForm>
-          <Header>
+        <Header>
+          <Search>
             <Binoculars size={32} color="#50B2C0" />
 
             <h1>Explorar</h1>
 
             <TextInput.Root>
-              <TextInput.Input placeholder="Buscar livro ou autor" />
+              <TextInput.Input
+                placeholder="Buscar livro ou autor"
+                value={search}
+                onChange={handleSearchChange}
+              />
               <TextInput.Icon>
                 <MagnifyingGlass />
               </TextInput.Icon>
             </TextInput.Root>
-          </Header>
+          </Search>
 
-          <RadioGroup.Root defaultValue="todos">
-            <RadioGroup.Item value="todos">Todos</RadioGroup.Item>
+          <RadioGroup.Root
+            defaultValue={allCategoriesValue}
+            onValueChange={handleSelectedCategoryChange}
+          >
+            <RadioGroup.Item value={allCategoriesValue}>
+              {allCategoriesValue}
+            </RadioGroup.Item>
+
             {categories.map((category) => (
               <RadioGroup.Item key={category.id} value={category.id}>
                 {category.name}
               </RadioGroup.Item>
             ))}
           </RadioGroup.Root>
-        </SearchForm>
+        </Header>
 
         <ListContainer>
           {data?.map((book) => (
