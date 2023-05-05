@@ -1,4 +1,4 @@
-import { InferGetStaticPropsType } from 'next'
+import { InferGetServerSidePropsType } from 'next'
 import Image from 'next/image'
 import { ChangeEvent, useState } from 'react'
 import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
@@ -9,6 +9,7 @@ import { TextInput } from '@/components/Forms/TextInput'
 import { RatingStart } from '@/components/RatingStars'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { api } from '@/lib/axios'
+import { debounce } from '@/utils/debounce'
 import {
   BookContainer,
   BookContent,
@@ -24,14 +25,30 @@ interface Category {
   name: string
 }
 
-export const getStaticProps = async () => {
+interface Book {
+  id: string
+  author: string
+  cover_url: string
+  name: string
+  ratings: {
+    rate: number
+  }[]
+}
+
+export const getServerSideProps = async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/categories')
-    const categories = (await response.json()) as Category[]
+    const categoriesResponse = await fetch(
+      'http://localhost:3000/api/categories',
+    )
+    const categories = (await categoriesResponse.json()) as Category[]
+
+    const booksResponse = await fetch('http://localhost:3000/api/books')
+    const books = (await booksResponse.json()) as Book[]
 
     return {
       props: {
         categories,
+        books,
       },
     }
   } catch (error) {
@@ -43,41 +60,38 @@ export const getStaticProps = async () => {
   }
 }
 
-interface Book {
-  id: string
-  author: string
-  cover_url: string
-  name: string
-  ratings: {
-    rate: number
-  }[]
-}
-
 export default function Explore({
   categories,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+  books,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const allCategoriesValue = 'Todos'
 
   const [selectedCategory, setSelectedCategory] = useState(allCategoriesValue)
   const [search, setSearch] = useState('')
 
-  const { data } = useQuery<Book[]>(
-    ['books', selectedCategory, search],
-    async () => {
-      const params = new URLSearchParams()
-
-      if (selectedCategory !== allCategoriesValue) {
-        params.append('categoryId', selectedCategory)
-      }
-
-      if (!!search) {
-        params.append('search', search)
-      }
-
-      const response = await api.get('/books', { params })
-      return response.data
+  const { data } = useQuery<Book[]>({
+    queryKey: ['books', selectedCategory, search],
+    queryFn: () => {
+      const debouncedFetchBooks = debounce(fetchBooks)
+      return debouncedFetchBooks()
     },
-  )
+    initialData: books,
+  })
+
+  async function fetchBooks(): Promise<Book[]> {
+    const params = new URLSearchParams()
+
+    if (selectedCategory !== allCategoriesValue) {
+      params.append('categoryId', selectedCategory)
+    }
+
+    if (!!search) {
+      params.append('search', search)
+    }
+
+    const response = await api.get('/books', { params })
+    return response.data
+  }
 
   function handleSelectedCategoryChange(value: string) {
     setSelectedCategory(value)
