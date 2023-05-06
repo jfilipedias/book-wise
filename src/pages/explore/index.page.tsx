@@ -1,6 +1,7 @@
-import { InferGetServerSidePropsType } from 'next'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import Image from 'next/image'
-import { ChangeEvent, useState } from 'react'
+import { useRouter } from 'next/router'
 import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/Card'
@@ -35,14 +36,27 @@ interface Book {
   }[]
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const categoriesResponse = await fetch(
       'http://localhost:3000/api/categories',
     )
     const categories = (await categoriesResponse.json()) as Category[]
 
-    const booksResponse = await fetch('http://localhost:3000/api/books')
+    const search = String(ctx.params?.search)
+    const categoryId = String(ctx.params?.categoryId)
+
+    const url = new URL('http://localhost:3000/api/books')
+
+    if (categoryId !== 'all') {
+      url.searchParams.set('categoryId', categoryId)
+    }
+
+    if (!!search) {
+      url.searchParams.set('search', search)
+    }
+
+    const booksResponse = await fetch(url)
     const books = (await booksResponse.json()) as Book[]
 
     return {
@@ -64,34 +78,34 @@ export default function Explore({
   categories,
   books,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const allCategoriesValue = 'Todos'
+  const allCategoriesValue = 'all'
 
-  const [selectedCategory, setSelectedCategory] = useState(allCategoriesValue)
-  const [search, setSearch] = useState('')
+  const router = useRouter()
+  const categoryIdQuery = String(router.query?.categoryId || '')
+  const searchQuery = String(router.query?.search || '')
+
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    if (categoryIdQuery) {
+      return (
+        categories.find((category) => category.id === categoryIdQuery)?.id ||
+        allCategoriesValue
+      )
+    }
+
+    return allCategoriesValue
+  })
+
+  const [search, setSearch] = useState(searchQuery)
 
   const { data } = useQuery<Book[]>({
-    queryKey: ['books', selectedCategory, search],
-    queryFn: () => {
-      const debouncedFetchBooks = debounce(fetchBooks)
-      return debouncedFetchBooks()
+    queryKey: ['books', selectedCategory, searchQuery],
+    queryFn: async () => {
+      const params = getQueryParams()
+      const response = await api.get('/books', { params })
+      return response.data
     },
     initialData: books,
   })
-
-  async function fetchBooks(): Promise<Book[]> {
-    const params = new URLSearchParams()
-
-    if (selectedCategory !== allCategoriesValue) {
-      params.append('categoryId', selectedCategory)
-    }
-
-    if (!!search) {
-      params.append('search', search)
-    }
-
-    const response = await api.get('/books', { params })
-    return response.data
-  }
 
   function handleSelectedCategoryChange(value: string) {
     setSelectedCategory(value)
@@ -100,6 +114,29 @@ export default function Explore({
   function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value)
   }
+
+  function getQueryParams() {
+    const params = new URLSearchParams()
+
+    if (selectedCategory !== allCategoriesValue) {
+      params.set('categoryId', selectedCategory)
+    }
+
+    if (!!search) {
+      params.set('search', search)
+    }
+
+    return params
+  }
+
+  useEffect(() => {
+    const params = getQueryParams()
+
+    router.replace({
+      pathname: '/explore',
+      query: params.toString(),
+    })
+  }, [selectedCategory, search])
 
   return (
     <DefaultLayout>
@@ -113,7 +150,7 @@ export default function Explore({
             <TextInput.Root>
               <TextInput.Input
                 placeholder="Buscar livro ou autor"
-                value={search}
+                value={searchQuery}
                 onChange={handleSearchChange}
               />
               <TextInput.Icon>
@@ -123,7 +160,7 @@ export default function Explore({
           </Search>
 
           <RadioGroup.Root
-            defaultValue={allCategoriesValue}
+            defaultValue={selectedCategory}
             onValueChange={handleSelectedCategoryChange}
           >
             <RadioGroup.Item value={allCategoriesValue}>
