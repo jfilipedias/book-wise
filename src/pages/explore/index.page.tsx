@@ -66,8 +66,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       },
     }
   } catch (error) {
-    console.error("Couldn't get books categories.")
-
     if (error instanceof Error) {
       console.error('Ocorreu o seguinte erro: ' + error.message)
     }

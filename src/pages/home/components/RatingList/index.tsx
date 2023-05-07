@@ -33,10 +33,18 @@ interface Rating {
   }
 }
 
-export function RatingList() {
-  const { data } = useQuery<Rating[]>(['ratings'], async () => {
-    const response = await api.get('/ratings')
-    return response.data
+interface RatingsListProps {
+  ratings: Rating[]
+}
+
+export function RatingsList({ ratings }: RatingsListProps) {
+  const { data } = useQuery<Rating[]>({
+    queryKey: ['ratings'],
+    queryFn: async () => {
+      const response = await api.get('/ratings')
+      return response.data
+    },
+    initialData: ratings,
   })
 
   return (

@@ -1,8 +1,8 @@
 import { CaretRight, ChartLineUp } from '@phosphor-icons/react'
 import { ActionLink } from '@/components/ActionLink'
 import { DefaultLayout } from '@/layout/DefaultLayout'
-import { RatingList } from './components/RatingList'
-import { RecommendationList } from './components/RecommendationList'
+import { RatingsList } from './components/RatingList'
+import { RecommendationsList } from './components/RecommendationList'
 import {
   Content,
   Feed,
@@ -11,8 +11,64 @@ import {
   SectionTitle,
   Container,
 } from './styles'
+import { InferGetServerSidePropsType } from 'next'
 
-export function Home() {
+interface Rating {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  book_id: string
+  user_id: string
+  book: {
+    cover_url: string
+    name: string
+    author: string
+  }
+  user: {
+    avatar_url: string
+    name: string
+  }
+}
+
+interface Recommendation {
+  id: string
+  author: string
+  cover_url: string
+  name: string
+  ratings: {
+    rate: number
+  }[]
+}
+
+export const getServerSideProps = async () => {
+  try {
+    const ratingsResponse = await fetch('http://localhost:3000/api/ratings')
+    const ratings = (await ratingsResponse.json()) as Rating[]
+
+    const recommendationsResponse = await fetch(
+      'http://localhost:3000/api/books/recommendation',
+    )
+    const recommendations =
+      (await recommendationsResponse.json()) as Recommendation[]
+
+    return {
+      props: {
+        ratings,
+        recommendations,
+      },
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Ocorreu o seguinte erro: ' + error.message)
+    }
+  }
+}
+
+export function Home({
+  ratings,
+  recommendations,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <DefaultLayout>
       <Container>
@@ -26,7 +82,7 @@ export function Home() {
               <h2>Avaliações mais recentes</h2>
             </SectionTitle>
 
-            <RatingList />
+            <RatingsList ratings={ratings} />
           </Feed>
 
           <SideList>
@@ -38,7 +94,7 @@ export function Home() {
               </ActionLink>
             </SectionTitle>
 
-            <RecommendationList />
+            <RecommendationsList recommendations={recommendations} />
           </SideList>
         </Content>
       </Container>

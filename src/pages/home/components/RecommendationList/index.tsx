@@ -20,20 +20,25 @@ interface Recommendation {
   }[]
 }
 
-export function RecommendationList() {
-  const { data } = useQuery<Recommendation[]>(
-    ['books', 'recommendation'],
-    async () => {
+interface RecommendationsListProps {
+  recommendations: Recommendation[]
+}
+
+export function RecommendationsList({
+  recommendations,
+}: RecommendationsListProps) {
+  const { data } = useQuery<Recommendation[]>({
+    queryKey: ['books', 'recommendation'],
+    queryFn: async () => {
       const response = await api.get('/books/recommendation')
       return response.data
     },
-  )
-
-  const recommendations = data?.slice(0, 4)
+    initialData: recommendations,
+  })
 
   return (
     <ListContainer>
-      {recommendations?.map((recommendation) => (
+      {data?.slice(0, 4).map((recommendation) => (
         <Card key={recommendation.id} size="sm">
           <RecommendationContainer>
             <Image
