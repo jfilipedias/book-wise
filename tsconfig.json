@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/pages/explore/components/BookDrawer/index.tsz"  ],
   "exclude": [
     "node_modules"
   ]

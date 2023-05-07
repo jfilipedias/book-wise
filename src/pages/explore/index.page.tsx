@@ -11,6 +11,7 @@ import { RatingStart } from '@/components/RatingStars'
 import { useDebounce } from '@/hooks/useDebounce'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { api } from '@/lib/axios'
+import { BookDrawer } from './components/BookDrawer'
 import {
   BookContainer,
   BookContent,
@@ -176,32 +177,38 @@ export default function Explore({
 
         <ListContainer>
           {data?.map((book) => (
-            <Card key={book.id} size="sm">
-              <BookContainer>
-                <Image
-                  src={book.cover_url}
-                  alt={book.name}
-                  width={108}
-                  height={152}
-                />
+            <BookDrawer.Root key={book.id}>
+              <BookDrawer.Trigger>
+                <Card size="sm">
+                  <BookContainer>
+                    <Image
+                      src={book.cover_url}
+                      alt={book.name}
+                      width={108}
+                      height={152}
+                    />
 
-                <BookContent>
-                  <BookInfos>
-                    <strong>{book.name}</strong>
-                    <span>{book.author}</span>
-                  </BookInfos>
+                    <BookContent>
+                      <BookInfos>
+                        <strong>{book.name}</strong>
+                        <span>{book.author}</span>
+                      </BookInfos>
 
-                  <RatingStart
-                    rate={
-                      book.ratings.reduce(
-                        (acc, rating) => acc + rating.rate,
-                        0,
-                      ) / book.ratings.length
-                    }
-                  />
-                </BookContent>
-              </BookContainer>
-            </Card>
+                      <RatingStart
+                        rate={
+                          book.ratings.reduce(
+                            (acc, rating) => acc + rating.rate,
+                            0,
+                          ) / book.ratings.length
+                        }
+                      />
+                    </BookContent>
+                  </BookContainer>
+                </Card>
+              </BookDrawer.Trigger>
+
+              <BookDrawer.Content bookId={book.id} />
+            </BookDrawer.Root>
           ))}
         </ListContainer>
       </Container>
