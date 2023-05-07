@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -8,9 +8,9 @@ import { Card } from '@/components/Card'
 import { RadioGroup } from '@/components/Forms/RadioGroup'
 import { TextInput } from '@/components/Forms/TextInput'
 import { RatingStart } from '@/components/RatingStars'
+import { useDebounce } from '@/hooks/useDebounce'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { api } from '@/lib/axios'
-import { debounce } from '@/utils/debounce'
 import {
   BookContainer,
   BookContent,
@@ -78,8 +78,6 @@ export default function Explore({
   categories,
   books,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const allCategoriesValue = 'all'
-
   const router = useRouter()
   const categoryIdQuery = String(router.query?.categoryId || '')
   const searchQuery = String(router.query?.search || '')
@@ -87,18 +85,22 @@ export default function Explore({
   const [selectedCategory, setSelectedCategory] = useState(() => {
     if (categoryIdQuery) {
       return (
-        categories.find((category) => category.id === categoryIdQuery)?.id ||
-        allCategoriesValue
+        categories.find((category) => category.id === categoryIdQuery)?.id || ''
       )
     }
 
-    return allCategoriesValue
+    return ''
   })
 
   const [search, setSearch] = useState(searchQuery)
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
+
+  const handleDebouncedSearchChange = useDebounce((value: string) =>
+    setDebouncedSearch(value),
+  )
 
   const { data } = useQuery<Book[]>({
-    queryKey: ['books', selectedCategory, searchQuery],
+    queryKey: ['books', selectedCategory, debouncedSearch],
     queryFn: async () => {
       const params = getQueryParams()
       const response = await api.get('/books', { params })
@@ -113,17 +115,18 @@ export default function Explore({
 
   function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
     setSearch(event.target.value)
+    handleDebouncedSearchChange(event.target.value)
   }
 
   function getQueryParams() {
     const params = new URLSearchParams()
 
-    if (selectedCategory !== allCategoriesValue) {
+    if (!!selectedCategory) {
       params.set('categoryId', selectedCategory)
     }
 
-    if (!!search) {
-      params.set('search', search)
+    if (!!debouncedSearch) {
+      params.set('search', debouncedSearch)
     }
 
     return params
@@ -136,7 +139,7 @@ export default function Explore({
       pathname: '/explore',
       query: params.toString(),
     })
-  }, [selectedCategory, search])
+  }, [selectedCategory, debouncedSearch])
 
   return (
     <DefaultLayout>
@@ -150,7 +153,7 @@ export default function Explore({
             <TextInput.Root>
               <TextInput.Input
                 placeholder="Buscar livro ou autor"
-                value={searchQuery}
+                value={search}
                 onChange={handleSearchChange}
               />
               <TextInput.Icon>
@@ -163,9 +166,7 @@ export default function Explore({
             defaultValue={selectedCategory}
             onValueChange={handleSelectedCategoryChange}
           >
-            <RadioGroup.Item value={allCategoriesValue}>
-              {allCategoriesValue}
-            </RadioGroup.Item>
+            <RadioGroup.Item value="">Todos</RadioGroup.Item>
 
             {categories.map((category) => (
               <RadioGroup.Item key={category.id} value={category.id}>
