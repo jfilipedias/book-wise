@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Avatar } from '@/components/Avatar'
 import { Card } from '@/components/Card'
-import { RatingStart } from '@/components/RatingStars'
+import { RatingStars } from '@/components/RatingStars'
 import { api } from '@/lib/axios'
 import { formatDateDistanceToNow, formatDateToString } from '@/utils/date'
 import {
@@ -70,7 +70,7 @@ export function RatingsList({ ratings }: RatingsListProps) {
                 </time>
               </UserData>
 
-              <RatingStart rate={rating.rate} />
+              <RatingStars rate={rating.rate} />
             </RatingHeader>
 
             <RatingBody>

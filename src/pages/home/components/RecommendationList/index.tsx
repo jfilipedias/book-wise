@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/Card'
-import { RatingStart } from '@/components/RatingStars'
+import { RatingStars } from '@/components/RatingStars'
 import { api } from '@/lib/axios'
 import {
   BookInfos,
@@ -54,7 +54,7 @@ export function RecommendationsList({
                 <span>{recommendation.author}</span>
               </BookInfos>
 
-              <RatingStart
+              <RatingStars
                 rate={
                   recommendation.ratings.reduce(
                     (acc, rating) => acc + rating.rate,

@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/Card'
 import { RadioGroup } from '@/components/Forms/RadioGroup'
 import { TextInput } from '@/components/Forms/TextInput'
-import { RatingStart } from '@/components/RatingStars'
+import { RatingStars } from '@/components/RatingStars'
 import { useDebounce } from '@/hooks/useDebounce'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { api } from '@/lib/axios'
@@ -194,7 +194,7 @@ export default function Explore({
                         <span>{book.author}</span>
                       </BookInfos>
 
-                      <RatingStart
+                      <RatingStars
                         rate={
                           book.ratings.reduce(
                             (acc, rating) => acc + rating.rate,
