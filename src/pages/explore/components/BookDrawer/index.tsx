@@ -104,7 +104,11 @@ const BookDrawerContent: ForwardRefRenderFunction<
 
               <StatsContent>
                 <span>Categoria</span>
-                <strong>Computação, educação</strong>
+                <strong>
+                  {data?.categories
+                    .map((item) => item.category.name)
+                    .join(', ')}
+                </strong>
               </StatsContent>
             </BookStats>
 
@@ -113,7 +117,7 @@ const BookDrawerContent: ForwardRefRenderFunction<
 
               <StatsContent>
                 <span>Páginas</span>
-                <strong>160</strong>
+                <strong>{data?.total_pages}</strong>
               </StatsContent>
             </BookStats>
           </BookAbout>
