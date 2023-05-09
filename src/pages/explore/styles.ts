@@ -45,6 +45,9 @@ export const BookContent = styled('div', {
 export const BookInfos = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  fontSize: '$sm',
+  textAlign: 'left',
+  lineHeight: '140%',
 
   strong: {
     maxHeight: 44,
@@ -55,6 +58,5 @@ export const BookInfos = styled('div', {
 
   span: {
     color: '$gray400',
-    fontSize: '$sm',
   },
 })

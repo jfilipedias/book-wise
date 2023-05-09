@@ -178,8 +178,8 @@ export default function Explore({
         <ListContainer>
           {data?.map((book) => (
             <BookDrawer.Root key={book.id}>
-              <BookDrawer.Trigger>
-                <Card size="sm">
+              <BookDrawer.Trigger asChild>
+                <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
                   <BookContainer>
                     <Image
                       src={book.cover_url}
