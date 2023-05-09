@@ -1,6 +1,6 @@
 import { createStitches } from '@stitches/react'
 
-export const { styled, getCssText, globalCss } = createStitches({
+export const { styled, getCssText, globalCss, keyframes } = createStitches({
   theme: {
     space: {
       px: '1px',
