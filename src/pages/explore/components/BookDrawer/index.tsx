@@ -31,18 +31,14 @@ interface Book {
   author: string
   cover_url: string
   total_pages: number
-  categories: {
-    category: {
-      name: string
-    }
-  }[]
+  categories: string[]
   ratings: {
     id: string
     rate: number
     description: string
-    created_at: string
+    createdAt: string
     user: {
-      avatar_url: string
+      avatarURL: string
       name: string
     }
   }[]
@@ -104,11 +100,7 @@ const BookDrawerContent: ForwardRefRenderFunction<
 
               <StatsContent>
                 <span>Categoria</span>
-                <strong>
-                  {data?.categories
-                    .map((item) => item.category.name)
-                    .join(', ')}
-                </strong>
+                <strong>{data?.categories.join(', ')}</strong>
               </StatsContent>
             </BookStats>
 

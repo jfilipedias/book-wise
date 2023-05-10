@@ -22,6 +22,20 @@ export default async function handler(
           },
         },
       },
+      ratings: {
+        select: {
+          id: true,
+          created_at: true,
+          description: true,
+          rate: true,
+          user: {
+            select: {
+              avatar_url: true,
+              name: true,
+            },
+          },
+        },
+      },
     },
     where: {
       id,
@@ -32,5 +46,26 @@ export default async function handler(
     return res.status(404).end()
   }
 
-  return res.status(200).json(book)
+  const bookOutput = {
+    id: book.id,
+    name: book.name,
+    author: book.author,
+    summary: book.summary,
+    coverURL: book.cover_url,
+    totalPages: book.total_pages,
+    createdAt: book.created_at,
+    categories: book.categories.map((category) => category.category.name),
+    ratings: book.ratings.map((rating) => ({
+      id: rating.id,
+      createdAt: rating.created_at,
+      description: rating.description,
+      rate: rating.rate,
+      user: {
+        avatarURL: rating.user.avatar_url,
+        name: rating.user.name,
+      },
+    })),
+  }
+
+  return res.status(200).json(bookOutput)
 }
