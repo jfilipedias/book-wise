@@ -30,11 +30,9 @@ interface Category {
 interface Book {
   id: string
   author: string
-  cover_url: string
+  coverURL: string
   name: string
-  ratings: {
-    rate: number
-  }[]
+  ratings: number[]
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -182,7 +180,7 @@ export default function Explore({
                 <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
                   <BookContainer>
                     <Image
-                      src={book.cover_url}
+                      src={book.coverURL}
                       alt={book.name}
                       width={108}
                       height={152}
@@ -196,10 +194,8 @@ export default function Explore({
 
                       <RatingStars
                         rate={
-                          book.ratings.reduce(
-                            (acc, rating) => acc + rating.rate,
-                            0,
-                          ) / book.ratings.length
+                          book.ratings.reduce((acc, rate) => acc + rate, 0) /
+                          book.ratings.length
                         }
                       />
                     </BookContent>

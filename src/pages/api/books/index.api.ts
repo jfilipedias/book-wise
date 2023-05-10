@@ -60,5 +60,13 @@ export default async function handler(
     where,
   })
 
-  return res.status(200).json(books)
+  const booksOutput = books.map((book) => ({
+    id: book.id,
+    author: book.author,
+    coverURL: book.cover_url,
+    name: book.name,
+    ratings: book.ratings.map((rating) => rating.rate),
+  }))
+
+  return res.status(200).json(booksOutput)
 }
