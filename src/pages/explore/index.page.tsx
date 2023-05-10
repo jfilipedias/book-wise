@@ -32,7 +32,7 @@ interface Book {
   author: string
   coverURL: string
   name: string
-  ratings: number[]
+  averageRate: number
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -192,12 +192,7 @@ export default function Explore({
                         <span>{book.author}</span>
                       </BookInfos>
 
-                      <RatingStars
-                        rate={
-                          book.ratings.reduce((acc, rate) => acc + rate, 0) /
-                          book.ratings.length
-                        }
-                      />
+                      <RatingStars rate={book.averageRate} />
                     </BookContent>
                   </BookContainer>
                 </Card>
