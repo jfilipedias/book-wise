@@ -33,7 +33,7 @@ export const DialogContent = styled(Dialog.Content, {
   bottom: 0,
   right: 0,
   width: '660px',
-  padding: '0 48px 0 48px',
+  padding: '0 48px 48px 48px',
   overflowY: 'auto',
   background: '$gray800',
   boxShadow: '-4px 0px 30px rgba(0, 0, 0, 0.5)',
@@ -193,5 +193,3 @@ export const UserData = styled('div', {
     fontSize: '$sm',
   },
 })
-
-export const RatingComment = styled('div', {})

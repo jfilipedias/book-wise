@@ -31,7 +31,6 @@ import {
   RatingContainer,
   RatingHeader,
   UserData,
-  RatingComment,
 } from './styles'
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
@@ -169,7 +168,7 @@ const BookDrawerContent: ForwardRefRenderFunction<
                     <RatingStars rate={rating.rate} />
                   </RatingHeader>
 
-                  <RatingComment>{rating.description}</RatingComment>
+                  <p>{rating.description}</p>
                 </RatingContainer>
               </Card>
             ))}
