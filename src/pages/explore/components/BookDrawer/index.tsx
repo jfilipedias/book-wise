@@ -1,11 +1,14 @@
-import { ForwardRefRenderFunction, forwardRef, useEffect } from 'react'
+import { ForwardRefRenderFunction, forwardRef } from 'react'
 import { Nunito_Sans } from 'next/font/google'
 import Image from 'next/image'
 import { BookOpen, BookmarkSimple, X } from '@phosphor-icons/react'
 import { DialogContentProps } from '@radix-ui/react-dialog'
 import { useQuery } from '@tanstack/react-query'
+import { Avatar } from '@/components/Avatar'
+import { Card } from '@/components/Card'
 import { RatingStars } from '@/components/RatingStars'
 import { api } from '@/lib/axios'
+import { formatDateDistanceToNow, formatDateToString } from '@/utils/date'
 import {
   DialogRoot,
   DialogTrigger,
@@ -14,7 +17,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogClose,
-  BookContainer,
+  BookSection,
   BookContent,
   BookInfos,
   BookTitle,
@@ -22,6 +25,13 @@ import {
   BookAbout,
   BookStats,
   StatsContent,
+  RatingsSection,
+  RatingsTitle,
+  RatingsList,
+  RatingContainer,
+  RatingHeader,
+  UserData,
+  RatingComment,
 } from './styles'
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
@@ -29,8 +39,8 @@ const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
 interface Book {
   name: string
   author: string
-  cover_url: string
-  total_pages: number
+  coverURL: string
+  totalPages: number
   categories: string[]
   ratings: {
     id: string
@@ -60,6 +70,14 @@ const BookDrawerContent: ForwardRefRenderFunction<
     },
   })
 
+  let averageRate = 0
+
+  if (data) {
+    averageRate =
+      data?.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+      data?.ratings.length
+  }
+
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -69,10 +87,10 @@ const BookDrawerContent: ForwardRefRenderFunction<
           <X aria-label="Close" />
         </DialogClose>
 
-        <BookContainer>
+        <BookSection>
           <BookContent>
             <Image
-              src={data?.cover_url || ''}
+              src={data?.coverURL || ''}
               alt={data?.name || ''}
               width={172}
               height={242}
@@ -88,8 +106,12 @@ const BookDrawerContent: ForwardRefRenderFunction<
               </BookTitle>
 
               <BookRating>
-                <RatingStars rate={4} />
-                <span>4 avaliações</span>
+                <RatingStars rate={averageRate} />
+                <span>
+                  {data?.ratings.length === 1
+                    ? '1 avaliação'
+                    : `${data?.ratings.length} avaliações`}
+                </span>
               </BookRating>
             </BookInfos>
           </BookContent>
@@ -109,11 +131,50 @@ const BookDrawerContent: ForwardRefRenderFunction<
 
               <StatsContent>
                 <span>Páginas</span>
-                <strong>{data?.total_pages}</strong>
+                <strong>{data?.totalPages}</strong>
               </StatsContent>
             </BookStats>
           </BookAbout>
-        </BookContainer>
+        </BookSection>
+
+        <RatingsSection>
+          <RatingsTitle>
+            <h3>Avaliações</h3>
+
+            <button>Avaliar</button>
+          </RatingsTitle>
+
+          <RatingsList>
+            {data?.ratings.map((rating) => (
+              <Card key={rating.id}>
+                <RatingContainer>
+                  <RatingHeader>
+                    <Avatar
+                      src={rating.user.avatarURL}
+                      alt={rating.user.name}
+                      width={40}
+                      height={40}
+                    />
+
+                    <UserData>
+                      <span>{rating.user.name}</span>
+                      <time
+                        title={formatDateToString(new Date(rating.createdAt))}
+                        dateTime={new Date(rating.createdAt).toISOString()}
+                      >
+                        {formatDateDistanceToNow(new Date(rating.createdAt))}
+                      </time>
+                    </UserData>
+
+                    <RatingStars rate={rating.rate} />
+                  </RatingHeader>
+
+                  <RatingComment>{rating.description}</RatingComment>
+                </RatingContainer>
+              </Card>
+            ))}
+          </RatingsList>
+        </RatingsSection>
       </DialogContent>
     </DialogPortal>
   )

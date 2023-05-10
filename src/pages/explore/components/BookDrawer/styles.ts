@@ -26,6 +26,9 @@ export const DialogOverlay = styled(Dialog.Overlay, {
 
 export const DialogContent = styled(Dialog.Content, {
   position: 'fixed',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
   top: 0,
   bottom: 0,
   right: 0,
@@ -40,8 +43,9 @@ export const DialogContent = styled(Dialog.Content, {
 export const DialogTitle = Dialog.Title
 
 export const DialogClose = styled(Dialog.Close, {
+  position: 'absolute',
+  right: 48,
   marginTop: '$6',
-  float: 'right',
   background: 'transparent',
   border: 0,
   cursor: 'pointer',
@@ -53,13 +57,13 @@ export const DialogClose = styled(Dialog.Close, {
   },
 })
 
-export const BookContainer = styled('div', {
+export const BookSection = styled('section', {
   display: 'flex',
   flexDirection: 'column',
   gap: '$10',
   marginTop: 64,
   padding: '24px 32px 16px',
-  width: 546,
+  width: '100%',
   borderRadius: '$md',
   background: '$gray700',
 })
@@ -129,3 +133,65 @@ export const StatsContent = styled('div', {
     fontSize: '$sm',
   },
 })
+
+export const RatingsSection = styled('section', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$4',
+})
+
+export const RatingsTitle = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  h3: {
+    color: '$gray200',
+    fontSize: '$sm',
+    fontWeight: '$regular',
+  },
+
+  button: {
+    all: 'unset',
+    padding: '$1 $2',
+    borderRadius: '$sm',
+    color: '$purple100',
+    fontWeight: '$bold',
+    cursor: 'pointer',
+  },
+})
+
+export const RatingsList = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
+})
+
+export const RatingContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$5',
+})
+
+export const RatingHeader = styled('div', {
+  display: 'flex',
+  gap: '$4',
+})
+
+export const UserData = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  flexGrow: 1,
+
+  span: {
+    color: '$gray100',
+  },
+
+  time: {
+    color: '$gray400',
+    fontSize: '$sm',
+  },
+})
+
+export const RatingComment = styled('div', {})
