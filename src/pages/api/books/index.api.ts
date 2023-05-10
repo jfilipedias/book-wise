@@ -65,7 +65,9 @@ export default async function handler(
     author: book.author,
     coverURL: book.cover_url,
     name: book.name,
-    averageRate: book.ratings.reduce((acc, rating) => acc + rating.rate, 0),
+    averageRate:
+      book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+      book.ratings.length,
   }))
 
   return res.status(200).json(booksOutput)
