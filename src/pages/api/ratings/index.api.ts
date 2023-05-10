@@ -27,5 +27,21 @@ export default async function handler(
     },
   })
 
-  return res.status(200).json(ratings)
+  const ratingsOutput = ratings.map((rating) => ({
+    id: rating.id,
+    createdAt: rating.created_at,
+    rate: rating.rate,
+    description: rating.description,
+    book: {
+      coverURL: rating.book.cover_url,
+      name: rating.book.name,
+      author: rating.book.author,
+    },
+    user: {
+      avatarURL: rating.user.avatar_url,
+      name: rating.user.name,
+    },
+  }))
+
+  return res.status(200).json(ratingsOutput)
 }

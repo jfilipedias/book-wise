@@ -19,16 +19,14 @@ interface Rating {
   id: string
   rate: number
   description: string
-  created_at: string
-  book_id: string
-  user_id: string
+  createdAt: string
   book: {
-    cover_url: string
+    coverURL: string
     name: string
     author: string
   }
   user: {
-    avatar_url: string
+    avatarURL: string
     name: string
   }
 }
@@ -54,7 +52,7 @@ export function RatingsList({ ratings }: RatingsListProps) {
           <RatingContainer>
             <RatingHeader>
               <Avatar
-                src={rating.user.avatar_url}
+                src={rating.user.avatarURL}
                 alt={rating.user.name}
                 width={40}
                 height={40}
@@ -63,10 +61,10 @@ export function RatingsList({ ratings }: RatingsListProps) {
               <UserData>
                 <span>{rating.user.name}</span>
                 <time
-                  title={formatDateToString(new Date(rating.created_at))}
-                  dateTime={new Date(rating.created_at).toISOString()}
+                  title={formatDateToString(new Date(rating.createdAt))}
+                  dateTime={new Date(rating.createdAt).toISOString()}
                 >
-                  {formatDateDistanceToNow(new Date(rating.created_at))}
+                  {formatDateDistanceToNow(new Date(rating.createdAt))}
                 </time>
               </UserData>
 
@@ -75,7 +73,7 @@ export function RatingsList({ ratings }: RatingsListProps) {
 
             <RatingBody>
               <Image
-                src={rating.book.cover_url}
+                src={rating.book.coverURL}
                 alt={rating.book.name}
                 width={108}
                 height={152}

@@ -17,16 +17,14 @@ interface Rating {
   id: string
   rate: number
   description: string
-  created_at: string
-  book_id: string
-  user_id: string
+  createdAt: string
   book: {
-    cover_url: string
+    coverURL: string
     name: string
     author: string
   }
   user: {
-    avatar_url: string
+    avatarURL: string
     name: string
   }
 }
