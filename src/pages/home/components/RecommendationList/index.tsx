@@ -13,11 +13,9 @@ import {
 interface Recommendation {
   id: string
   author: string
-  cover_url: string
+  coverURL: string
   name: string
-  ratings: {
-    rate: number
-  }[]
+  averageRate: number
 }
 
 interface RecommendationsListProps {
@@ -42,7 +40,7 @@ export function RecommendationsList({
         <Card key={recommendation.id} size="sm">
           <RecommendationContainer>
             <Image
-              src={recommendation.cover_url}
+              src={recommendation.coverURL}
               alt={recommendation.name}
               width={64}
               height={94}
@@ -54,14 +52,7 @@ export function RecommendationsList({
                 <span>{recommendation.author}</span>
               </BookInfos>
 
-              <RatingStars
-                rate={
-                  recommendation.ratings.reduce(
-                    (acc, rating) => acc + rating.rate,
-                    0,
-                  ) / recommendation.ratings.length
-                }
-              />
+              <RatingStars rate={recommendation.averageRate} />
             </RecommendationContent>
           </RecommendationContainer>
         </Card>

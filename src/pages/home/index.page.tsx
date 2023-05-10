@@ -34,11 +34,9 @@ interface Rating {
 interface Recommendation {
   id: string
   author: string
-  cover_url: string
+  coverURL: string
   name: string
-  ratings: {
-    rate: number
-  }[]
+  averageRate: number
 }
 
 export const getServerSideProps = async () => {

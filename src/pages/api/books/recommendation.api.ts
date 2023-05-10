@@ -33,5 +33,15 @@ export default async function handler(
     },
   })
 
-  return res.status(200).json(books)
+  const booksOutput = books.map((book) => ({
+    id: book.id,
+    author: book.author,
+    coverURL: book.cover_url,
+    name: book.name,
+    averageRate:
+      book.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
+      book.ratings.length,
+  }))
+
+  return res.status(200).json(booksOutput)
 }
