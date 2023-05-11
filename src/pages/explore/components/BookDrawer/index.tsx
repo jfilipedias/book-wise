@@ -1,4 +1,4 @@
-import { ForwardRefRenderFunction, forwardRef } from 'react'
+import { ReactNode, useState } from 'react'
 import { Nunito_Sans } from 'next/font/google'
 import Image from 'next/image'
 import { BookOpen, BookmarkSimple, X } from '@phosphor-icons/react'
@@ -55,12 +55,21 @@ interface Book {
 
 interface BookDrawerContentProps extends DialogContentProps {
   bookId: string
+  children: ReactNode | ReactNode[]
+  defaultOpen?: boolean
+  onOpen?: () => void
+  onClose?: () => void
 }
 
-const BookDrawerContent: ForwardRefRenderFunction<
-  HTMLDivElement,
-  BookDrawerContentProps
-> = ({ bookId, ...props }: BookDrawerContentProps, ref) => {
+export function BookDrawer({
+  bookId,
+  children,
+  defaultOpen,
+  onOpen,
+  onClose,
+}: BookDrawerContentProps) {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+
   const { data } = useQuery<Book>({
     queryKey: ['books', bookId],
     queryFn: async () => {
@@ -77,110 +86,120 @@ const BookDrawerContent: ForwardRefRenderFunction<
       data?.ratings.length
   }
 
+  function handleOpenChange(open: boolean) {
+    setIsOpen(open)
+
+    if (typeof onClose !== 'undefined' && !open) {
+      onClose()
+    }
+
+    if (typeof onOpen !== 'undefined' && open) {
+      onOpen()
+    }
+  }
+
   return (
-    <DialogPortal>
-      <DialogOverlay />
+    <DialogRoot open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent ref={ref} {...props} className={nunitoSans.className}>
-        <DialogClose>
-          <X aria-label="Close" />
-        </DialogClose>
+      <DialogPortal>
+        <DialogOverlay />
 
-        <BookSection>
-          <BookContent>
-            <Image
-              src={data?.coverURL || ''}
-              alt={data?.name || ''}
-              width={172}
-              height={242}
-            />
+        <DialogContent className={nunitoSans.className}>
+          <DialogClose>
+            <X aria-label="Close" />
+          </DialogClose>
 
-            <BookInfos>
-              <BookTitle>
-                <DialogTitle asChild>
-                  <h2>{data?.name}</h2>
-                </DialogTitle>
+          <BookSection>
+            <BookContent>
+              <Image
+                src={data?.coverURL || ''}
+                alt={data?.name || ''}
+                width={172}
+                height={242}
+              />
 
-                <span>{data?.author}</span>
-              </BookTitle>
+              <BookInfos>
+                <BookTitle>
+                  <DialogTitle asChild>
+                    <h2>{data?.name}</h2>
+                  </DialogTitle>
 
-              <BookRating>
-                <RatingStars rate={averageRate} />
-                <span>
-                  {data?.ratings.length === 1
-                    ? '1 avaliação'
-                    : `${data?.ratings.length} avaliações`}
-                </span>
-              </BookRating>
-            </BookInfos>
-          </BookContent>
+                  <span>{data?.author}</span>
+                </BookTitle>
 
-          <BookAbout>
-            <BookStats>
-              <BookmarkSimple />
+                <BookRating>
+                  <RatingStars rate={averageRate} />
+                  <span>
+                    {data?.ratings.length === 1
+                      ? '1 avaliação'
+                      : `${data?.ratings.length} avaliações`}
+                  </span>
+                </BookRating>
+              </BookInfos>
+            </BookContent>
 
-              <StatsContent>
-                <span>Categoria</span>
-                <strong>{data?.categories.join(', ')}</strong>
-              </StatsContent>
-            </BookStats>
+            <BookAbout>
+              <BookStats>
+                <BookmarkSimple />
 
-            <BookStats>
-              <BookOpen />
+                <StatsContent>
+                  <span>Categoria</span>
+                  <strong>{data?.categories.join(', ')}</strong>
+                </StatsContent>
+              </BookStats>
 
-              <StatsContent>
-                <span>Páginas</span>
-                <strong>{data?.totalPages}</strong>
-              </StatsContent>
-            </BookStats>
-          </BookAbout>
-        </BookSection>
+              <BookStats>
+                <BookOpen />
 
-        <RatingsSection>
-          <RatingsTitle>
-            <h3>Avaliações</h3>
+                <StatsContent>
+                  <span>Páginas</span>
+                  <strong>{data?.totalPages}</strong>
+                </StatsContent>
+              </BookStats>
+            </BookAbout>
+          </BookSection>
 
-            <button>Avaliar</button>
-          </RatingsTitle>
+          <RatingsSection>
+            <RatingsTitle>
+              <h3>Avaliações</h3>
 
-          <RatingsList>
-            {data?.ratings.map((rating) => (
-              <Card key={rating.id}>
-                <RatingContainer>
-                  <RatingHeader>
-                    <Avatar
-                      src={rating.user.avatarURL}
-                      alt={rating.user.name}
-                      width={40}
-                      height={40}
-                    />
+              <button>Avaliar</button>
+            </RatingsTitle>
 
-                    <UserData>
-                      <span>{rating.user.name}</span>
-                      <time
-                        title={formatDateToString(new Date(rating.createdAt))}
-                        dateTime={new Date(rating.createdAt).toISOString()}
-                      >
-                        {formatDateDistanceToNow(new Date(rating.createdAt))}
-                      </time>
-                    </UserData>
+            <RatingsList>
+              {data?.ratings.map((rating) => (
+                <Card key={rating.id}>
+                  <RatingContainer>
+                    <RatingHeader>
+                      <Avatar
+                        src={rating.user.avatarURL}
+                        alt={rating.user.name}
+                        width={40}
+                        height={40}
+                      />
 
-                    <RatingStars rate={rating.rate} />
-                  </RatingHeader>
+                      <UserData>
+                        <span>{rating.user.name}</span>
+                        <time
+                          title={formatDateToString(new Date(rating.createdAt))}
+                          dateTime={new Date(rating.createdAt).toISOString()}
+                        >
+                          {formatDateDistanceToNow(new Date(rating.createdAt))}
+                        </time>
+                      </UserData>
 
-                  <p>{rating.description}</p>
-                </RatingContainer>
-              </Card>
-            ))}
-          </RatingsList>
-        </RatingsSection>
-      </DialogContent>
-    </DialogPortal>
+                      <RatingStars rate={rating.rate} />
+                    </RatingHeader>
+
+                    <p>{rating.description}</p>
+                  </RatingContainer>
+                </Card>
+              ))}
+            </RatingsList>
+          </RatingsSection>
+        </DialogContent>
+      </DialogPortal>
+    </DialogRoot>
   )
-}
-
-export const BookDrawer = {
-  Root: DialogRoot,
-  Trigger: DialogTrigger,
-  Content: forwardRef(BookDrawerContent),
 }

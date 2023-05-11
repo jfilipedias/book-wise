@@ -78,6 +78,7 @@ export default function Explore({
   const router = useRouter()
   const categoryIdQuery = String(router.query?.categoryId || '')
   const searchQuery = String(router.query?.search || '')
+  const bookIdQuery = String(router.query?.bookId || '')
 
   const [selectedCategory, setSelectedCategory] = useState(() => {
     if (categoryIdQuery) {
@@ -91,6 +92,8 @@ export default function Explore({
 
   const [search, setSearch] = useState(searchQuery)
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
+
+  const [selectedBook, setSelectedBook] = useState(bookIdQuery)
 
   const handleDebouncedSearchChange = useDebounce((value: string) =>
     setDebouncedSearch(value),
@@ -126,6 +129,10 @@ export default function Explore({
       params.set('search', debouncedSearch)
     }
 
+    if (!!selectedBook) {
+      params.set('bookId', selectedBook)
+    }
+
     return params
   }
 
@@ -136,7 +143,7 @@ export default function Explore({
       pathname: '/explore',
       query: params.toString(),
     })
-  }, [selectedCategory, debouncedSearch])
+  }, [selectedCategory, debouncedSearch, selectedBook])
 
   return (
     <DefaultLayout>
@@ -175,31 +182,33 @@ export default function Explore({
 
         <ListContainer>
           {data?.map((book) => (
-            <BookDrawer.Root key={book.id}>
-              <BookDrawer.Trigger asChild>
-                <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
-                  <BookContainer>
-                    <Image
-                      src={book.coverURL}
-                      alt={book.name}
-                      width={108}
-                      height={152}
-                    />
+            <BookDrawer
+              key={book.id}
+              bookId={book.id}
+              defaultOpen={selectedBook === book.id}
+              onOpen={() => setSelectedBook(book.id)}
+              onClose={() => setSelectedBook('')}
+            >
+              <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
+                <BookContainer>
+                  <Image
+                    src={book.coverURL}
+                    alt={book.name}
+                    width={108}
+                    height={152}
+                  />
 
-                    <BookContent>
-                      <BookInfos>
-                        <strong>{book.name}</strong>
-                        <span>{book.author}</span>
-                      </BookInfos>
+                  <BookContent>
+                    <BookInfos>
+                      <strong>{book.name}</strong>
+                      <span>{book.author}</span>
+                    </BookInfos>
 
-                      <RatingStars rate={book.averageRate} />
-                    </BookContent>
-                  </BookContainer>
-                </Card>
-              </BookDrawer.Trigger>
-
-              <BookDrawer.Content bookId={book.id} />
-            </BookDrawer.Root>
+                    <RatingStars rate={book.averageRate} />
+                  </BookContent>
+                </BookContainer>
+              </Card>
+            </BookDrawer>
           ))}
         </ListContainer>
       </Container>
