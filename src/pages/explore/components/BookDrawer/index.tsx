@@ -32,6 +32,7 @@ import {
   RatingHeader,
   UserData,
 } from './styles'
+import { LoginDialog } from '../LoginDialog'
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
 
@@ -164,7 +165,9 @@ export function BookDrawer({
             <RatingsTitle>
               <h3>Avaliações</h3>
 
-              <button>Avaliar</button>
+              <LoginDialog>
+                <button>Avaliar</button>
+              </LoginDialog>
             </RatingsTitle>
 
             <RatingsList>

@@ -1,9 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import GoogleIcon from '@/assets/icons/google-icon.svg'
 import GitHubIcon from '@/assets/icons/github-icon.svg'
 import RocketIcon from '@/assets/icons/rocket-icon.svg'
 import {
-  Button,
   Container,
   Hero,
   LoginContainer,
@@ -30,20 +30,20 @@ export default function Login() {
         </WelcomeContainer>
 
         <LoginOptions>
-          <Button>
+          <button>
             <Image src={GoogleIcon} alt="Icone do Google" />
             Entrar com o Google
-          </Button>
+          </button>
 
-          <Button>
+          <button>
             <Image src={GitHubIcon} alt="Icone do GitHub" />
             Entrar com o GitHub
-          </Button>
+          </button>
 
-          <Button>
+          <Link href="/">
             <Image src={RocketIcon} alt="Icone de foguete" />
             Acessar como visitante
-          </Button>
+          </Link>
         </LoginOptions>
       </LoginContainer>
     </Container>

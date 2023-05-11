@@ -41,19 +41,19 @@ export const LoginOptions = styled('div', {
   flexDirection: 'column',
   gap: '$4',
   width: '100%',
-})
 
-export const Button = styled('button', {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '$5',
-  width: '100%',
-  padding: '$5 $6',
-  border: 0,
-  borderRadius: '$md',
-  background: '$gray600',
-  color: '$gray200',
-  fontSize: '$lg',
-  fontWeight: '$bold',
-  cursor: 'pointer',
+  'a, button': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '$5',
+    width: '100%',
+    padding: '$5 $6',
+    border: 0,
+    borderRadius: '$md',
+    background: '$gray600',
+    color: '$gray200',
+    fontSize: '$lg',
+    fontWeight: '$bold',
+    cursor: 'pointer',
+  },
 })
