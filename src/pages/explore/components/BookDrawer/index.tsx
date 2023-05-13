@@ -178,8 +178,6 @@ export function BookDrawer({
                       <Avatar
                         src={rating.user.avatarURL}
                         alt={rating.user.name}
-                        width={40}
-                        height={40}
                       />
 
                       <UserData>

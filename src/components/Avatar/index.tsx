@@ -2,12 +2,14 @@ import { User } from '@phosphor-icons/react'
 import { AvatarImageProps } from '@radix-ui/react-avatar'
 import { AvatarFallback, AvatarImage, AvatarRoot, Container } from './styles'
 
-export type AvatarProps = AvatarImageProps
+export interface AvatarProps extends AvatarImageProps {
+  size?: 'sm' | 'md' | 'lg'
+}
 
-export function Avatar(props: AvatarProps) {
+export function Avatar({ size = 'md', ...props }: AvatarProps) {
   return (
-    <Container>
-      <AvatarRoot>
+    <Container size={size}>
+      <AvatarRoot size={size}>
         <AvatarImage {...props} />
 
         <AvatarFallback delayMs={600}>

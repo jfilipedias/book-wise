@@ -51,12 +51,7 @@ export function RatingsList({ ratings }: RatingsListProps) {
         <Card key={rating.id}>
           <RatingContainer>
             <RatingHeader>
-              <Avatar
-                src={rating.user.avatarURL}
-                alt={rating.user.name}
-                width={40}
-                height={40}
-              />
+              <Avatar src={rating.user.avatarURL} alt={rating.user.name} />
 
               <UserData>
                 <span>{rating.user.name}</span>

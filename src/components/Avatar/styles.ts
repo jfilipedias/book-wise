@@ -5,18 +5,38 @@ export const Container = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: 42,
-  height: 42,
   borderRadius: '$full',
   background: '$gradient-vertical',
+
+  variants: {
+    size: {
+      sm: { width: 32, height: 32 },
+      md: { width: 42, height: 42 },
+      lg: { width: 72, height: 72 },
+    },
+  },
+
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const AvatarRoot = styled(AvatarPrimitive.Root, {
   display: 'inline-block',
-  width: 40,
-  height: 40,
   borderRadius: '$full',
   overflow: 'hidden',
+
+  variants: {
+    size: {
+      sm: { width: 30, height: 30 },
+      md: { width: 40, height: 40 },
+      lg: { width: 70, height: 70 },
+    },
+  },
+
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const AvatarImage = styled(AvatarPrimitive.Image, {
