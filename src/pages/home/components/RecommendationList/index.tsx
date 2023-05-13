@@ -38,7 +38,9 @@ export function RecommendationsList({
     <ListContainer>
       {data?.slice(0, 4).map((recommendation) => (
         <Card key={recommendation.id} size="sm">
-          <RecommendationContainer>
+          <RecommendationContainer
+            href={`/explore?bookId=${recommendation.id}`}
+          >
             <Image
               src={recommendation.coverURL}
               alt={recommendation.name}

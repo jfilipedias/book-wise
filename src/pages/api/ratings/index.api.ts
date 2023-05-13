@@ -20,6 +20,7 @@ export default async function handler(
       },
       user: {
         select: {
+          id: true,
           avatar_url: true,
           name: true,
         },
@@ -38,6 +39,7 @@ export default async function handler(
       author: rating.book.author,
     },
     user: {
+      id: rating.user.id,
       avatarURL: rating.user.avatar_url,
       name: rating.user.name,
     },

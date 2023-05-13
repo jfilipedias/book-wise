@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { styled } from '@/styles/stitches.config'
 
 export const ListContainer = styled('div', {
@@ -6,7 +7,7 @@ export const ListContainer = styled('div', {
   gap: '$3',
 })
 
-export const RatingContainer = styled('div', {
+export const RatingContainer = styled(Link, {
   display: 'flex',
   flexDirection: 'column',
   gap: '$8',

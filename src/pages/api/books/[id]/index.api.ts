@@ -30,6 +30,7 @@ export default async function handler(
           rate: true,
           user: {
             select: {
+              id: true,
               avatar_url: true,
               name: true,
             },
@@ -61,6 +62,7 @@ export default async function handler(
       description: rating.description,
       rate: rating.rate,
       user: {
+        id: rating.user.id,
         avatarURL: rating.user.avatar_url,
         name: rating.user.name,
       },

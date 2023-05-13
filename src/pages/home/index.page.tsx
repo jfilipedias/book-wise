@@ -24,6 +24,7 @@ interface Rating {
     author: string
   }
   user: {
+    id: string
     avatarURL: string
     name: string
   }

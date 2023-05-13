@@ -61,7 +61,7 @@ export default async function handler(
       ON COB.categoryId = C.id
     WHERE R.user_id = ${user.id}
     GROUP BY C.name
-    ORDER BY COUNT(*) DESC
+    ORDER BY COUNT(*) DESC, B.total_pages DESC
     LIMIT 1
   `
 

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
 import { keyframes, styled } from '@/styles/stitches.config'
 
@@ -167,7 +168,7 @@ export const RatingsList = styled('div', {
   gap: '$3',
 })
 
-export const RatingContainer = styled('div', {
+export const RatingContainer = styled(Link, {
   display: 'flex',
   flexDirection: 'column',
   gap: '$5',

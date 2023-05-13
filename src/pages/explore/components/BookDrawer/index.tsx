@@ -48,6 +48,7 @@ interface Book {
     description: string
     createdAt: string
     user: {
+      id: string
       avatarURL: string
       name: string
     }
@@ -173,7 +174,7 @@ export function BookDrawer({
             <RatingsList>
               {data?.ratings.map((rating) => (
                 <Card key={rating.id}>
-                  <RatingContainer>
+                  <RatingContainer href={`/user/${rating.user.id}`}>
                     <RatingHeader>
                       <Avatar
                         src={rating.user.avatarURL}
