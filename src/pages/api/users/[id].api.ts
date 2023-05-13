@@ -30,7 +30,7 @@ export default async function handler(
     return res.status(404).json({ message: 'User does not exist.' })
   }
 
-  const userData = await prisma.$queryRaw<UserData[]>`
+  const userInfo = await prisma.$queryRaw<UserData[]>`
     SELECT 
       U.name, 
       U.created_at AS createdAt,
@@ -65,21 +65,21 @@ export default async function handler(
     LIMIT 1
   `
 
-  userData.forEach((row) => {
+  userInfo.forEach((row) => {
     row.totalPages = Number(row.totalPages)
     row.totalBooks = Number(row.totalBooks)
     row.totalAuthors = Number(row.totalAuthors)
   })
 
-  const userDataOutput = {
-    name: userData[0].name,
-    createdAt: userData[0].createdAt,
-    avatarURL: userData[0].avatarURL,
-    totalPages: userData[0].totalPages,
-    totalBooks: userData[0].totalBooks,
-    totalAuthors: userData[0].totalAuthors,
+  const userInfoOutput = {
+    name: userInfo[0].name,
+    createdAt: userInfo[0].createdAt,
+    avatarURL: userInfo[0].avatarURL,
+    totalPages: userInfo[0].totalPages,
+    totalBooks: userInfo[0].totalBooks,
+    totalAuthors: userInfo[0].totalAuthors,
     mostReadCategory: mostReadCategories[0].name,
   }
 
-  res.status(200).json(userDataOutput)
+  res.status(200).json(userInfoOutput)
 }
