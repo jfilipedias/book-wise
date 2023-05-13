@@ -14,6 +14,7 @@ export const Container = styled('aside', {
   margin: '$5',
   padding: '$10',
   background: `url(${SidebarBackgroundImage.src}) no-repeat`,
+  backgroundSize: 'cover',
   borderRadius: '$lg',
 
   section: {
