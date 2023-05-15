@@ -10,16 +10,19 @@ const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
 
 globalStyles()
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
-    <SessionProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={session}>
         <div className={nunitoSans.className}>
           <Component {...pageProps} />
         </div>
+      </SessionProvider>
 
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </SessionProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   )
 }

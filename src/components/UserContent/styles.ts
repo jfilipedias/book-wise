@@ -12,6 +12,12 @@ export const UserRatings = styled('section', {
   flexGrow: 1,
 })
 
+export const EmptyListWarning = styled('h2', {
+  marginTop: '$5',
+  fontSize: '$xl',
+  textAlign: 'center',
+})
+
 export const RatingsList = styled('div', {
   display: 'flex',
   flexDirection: 'column',

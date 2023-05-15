@@ -1,10 +1,21 @@
 import Image from 'next/image'
-import { Binoculars, ChartLineUp, SignIn } from '@phosphor-icons/react'
+import { signOut, useSession } from 'next-auth/react'
+import { Binoculars, ChartLineUp, SignIn, SignOut } from '@phosphor-icons/react'
 import LogoImage from '@/assets/logo.svg'
 import { NavLink } from '@/components/NavLink'
-import { Container, Login, Navbar } from './styles'
+import { Avatar } from '@/components/Avatar'
+import {
+  Container,
+  LoginLink,
+  LogoutButton,
+  Navbar,
+  ProfileContainer,
+  ProfileLink,
+} from './styles'
 
 export function Sidebar() {
+  const { data: session } = useSession()
+
   return (
     <Container>
       <section>
@@ -20,9 +31,26 @@ export function Sidebar() {
         </Navbar>
       </section>
 
-      <Login href="/login">
-        Fazer login <SignIn size={20} color="#50B2C0" />
-      </Login>
+      {!!session ? (
+        <ProfileContainer>
+          <ProfileLink href="/profile">
+            <Avatar
+              src={session.user.avatar_url}
+              alt={session.user.name}
+              size="sm"
+            />
+            <span>{session.user.name.split(' ')[0]}</span>
+          </ProfileLink>
+
+          <LogoutButton title="Sair" onClick={() => signOut()}>
+            <SignOut />
+          </LogoutButton>
+        </ProfileContainer>
+      ) : (
+        <LoginLink href="/login">
+          Fazer login <SignIn size={20} color="#50B2C0" />
+        </LoginLink>
+      )}
     </Container>
   )
 }

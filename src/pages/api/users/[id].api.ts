@@ -39,9 +39,9 @@ export default async function handler(
       COUNT(B.id) AS totalBooks,
       COUNT(DISTINCT B.author) AS totalAuthors
     FROM users AS U
-    INNER JOIN ratings AS R
+    LEFT JOIN ratings AS R
       ON R.user_id = U.id
-    INNER JOIN books AS B 
+    LEFT JOIN books AS B 
       ON R.book_id = B.id
     WHERE U.id = ${user.id}
     GROUP BY U.name, U.created_at
@@ -71,6 +71,8 @@ export default async function handler(
     row.totalAuthors = Number(row.totalAuthors)
   })
 
+  console.log({ userInfo })
+
   const userInfoOutput = {
     name: userInfo[0].name,
     createdAt: userInfo[0].createdAt,
@@ -78,7 +80,7 @@ export default async function handler(
     totalPages: userInfo[0].totalPages,
     totalBooks: userInfo[0].totalBooks,
     totalAuthors: userInfo[0].totalAuthors,
-    mostReadCategory: mostReadCategories[0].name,
+    mostReadCategory: mostReadCategories[0]?.name || '',
   }
 
   res.status(200).json(userInfoOutput)

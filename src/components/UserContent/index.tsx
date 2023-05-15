@@ -20,6 +20,7 @@ import {
   BookContainer,
   BookInfos,
   Container,
+  EmptyListWarning,
   RatingContainer,
   RatingContent,
   RatingsList,
@@ -30,6 +31,7 @@ import {
   UserRatings,
   UserStats,
 } from './styles'
+import { useSession } from 'next-auth/react'
 
 interface Rating {
   id: string
@@ -43,6 +45,7 @@ interface Rating {
   }
 }
 interface UserContentProps {
+  isProfile?: boolean
   userInfo: {
     name: string
     createdAt: string
@@ -55,12 +58,17 @@ interface UserContentProps {
   ratings: Rating[]
 }
 
-export function UserContent({ userInfo, ratings }: UserContentProps) {
+export function UserContent({
+  isProfile,
+  userInfo,
+  ratings,
+}: UserContentProps) {
   const router = useRouter()
+  const { data: session } = useSession()
 
-  const userId = String(router.query?.id)
+  const userId =
+    isProfile && session ? session.user.id : String(router.query?.id)
   const searchQuery = String(router.query?.search || '')
-  console.log({ userId })
 
   const [search, setSearch] = useState(searchQuery)
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
@@ -98,7 +106,7 @@ export function UserContent({ userInfo, ratings }: UserContentProps) {
     const params = getQueryParams()
 
     router.replace({
-      pathname: `/user/${userId}`,
+      pathname: isProfile ? '/profile' : `/user/${userId}`,
       query: params.toString(),
     })
   }, [debouncedSearch])
@@ -117,8 +125,14 @@ export function UserContent({ userInfo, ratings }: UserContentProps) {
           </TextInput.Icon>
         </TextInput.Root>
 
+        {data.length === 0 && (
+          <EmptyListWarning>
+            Ainda não há avaliações desse usuário
+          </EmptyListWarning>
+        )}
+
         <RatingsList>
-          {data.map((rating) => (
+          {data?.map((rating) => (
             <RatingContainer key={rating.id}>
               <time
                 title={formatDateToString(new Date(rating.createdAt))}
@@ -192,14 +206,16 @@ export function UserContent({ userInfo, ratings }: UserContentProps) {
             </div>
           </StatsContainer>
 
-          <StatsContainer>
-            <BookmarkSimple />
+          {userInfo.mostReadCategory && (
+            <StatsContainer>
+              <BookmarkSimple />
 
-            <div>
-              <strong>{userInfo.mostReadCategory}</strong>
-              <span>Categoria mais lida</span>
-            </div>
-          </StatsContainer>
+              <div>
+                <strong>{userInfo.mostReadCategory}</strong>
+                <span>Categoria mais lida</span>
+              </div>
+            </StatsContainer>
+          )}
         </UserStats>
       </UserInfo>
     </Container>

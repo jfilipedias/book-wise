@@ -105,102 +105,112 @@ export function BookDrawer({
       <DialogTrigger asChild>{children}</DialogTrigger>
 
       <DialogPortal>
-        <DialogOverlay />
+        {!!data && (
+          <>
+            <DialogOverlay />
 
-        <DialogContent className={nunitoSans.className}>
-          <DialogClose>
-            <X aria-label="Close" />
-          </DialogClose>
+            <DialogContent className={nunitoSans.className}>
+              <DialogClose>
+                <X aria-label="Close" />
+              </DialogClose>
 
-          <BookSection>
-            <BookContent>
-              <Image
-                src={data?.coverURL || ''}
-                alt={data?.name || ''}
-                width={172}
-                height={242}
-              />
+              <BookSection>
+                <BookContent>
+                  <Image
+                    src={data.coverURL}
+                    alt={data.name}
+                    width={172}
+                    height={242}
+                  />
 
-              <BookInfos>
-                <BookTitle>
-                  <DialogTitle asChild>
-                    <h2>{data?.name}</h2>
-                  </DialogTitle>
+                  <BookInfos>
+                    <BookTitle>
+                      <DialogTitle asChild>
+                        <h2>{data.name}</h2>
+                      </DialogTitle>
 
-                  <span>{data?.author}</span>
-                </BookTitle>
+                      <span>{data.author}</span>
+                    </BookTitle>
 
-                <BookRating>
-                  <RatingStars rate={averageRate} />
-                  <span>
-                    {data?.ratings.length === 1
-                      ? '1 avaliação'
-                      : `${data?.ratings.length} avaliações`}
-                  </span>
-                </BookRating>
-              </BookInfos>
-            </BookContent>
+                    <BookRating>
+                      <RatingStars rate={averageRate} />
+                      <span>
+                        {data.ratings.length === 1
+                          ? '1 avaliação'
+                          : `${data.ratings.length} avaliações`}
+                      </span>
+                    </BookRating>
+                  </BookInfos>
+                </BookContent>
 
-            <BookAbout>
-              <BookStats>
-                <BookmarkSimple />
+                <BookAbout>
+                  <BookStats>
+                    <BookmarkSimple />
 
-                <StatsContent>
-                  <span>Categoria</span>
-                  <strong>{data?.categories.join(', ')}</strong>
-                </StatsContent>
-              </BookStats>
+                    <StatsContent>
+                      <span>Categoria</span>
+                      <strong>{data.categories.join(', ')}</strong>
+                    </StatsContent>
+                  </BookStats>
 
-              <BookStats>
-                <BookOpen />
+                  <BookStats>
+                    <BookOpen />
 
-                <StatsContent>
-                  <span>Páginas</span>
-                  <strong>{data?.totalPages}</strong>
-                </StatsContent>
-              </BookStats>
-            </BookAbout>
-          </BookSection>
+                    <StatsContent>
+                      <span>Páginas</span>
+                      <strong>{data.totalPages}</strong>
+                    </StatsContent>
+                  </BookStats>
+                </BookAbout>
+              </BookSection>
 
-          <RatingsSection>
-            <RatingsTitle>
-              <h3>Avaliações</h3>
+              <RatingsSection>
+                <RatingsTitle>
+                  <h3>Avaliações</h3>
 
-              <LoginDialog>
-                <button>Avaliar</button>
-              </LoginDialog>
-            </RatingsTitle>
+                  <LoginDialog>
+                    <button>Avaliar</button>
+                  </LoginDialog>
+                </RatingsTitle>
 
-            <RatingsList>
-              {data?.ratings.map((rating) => (
-                <Card key={rating.id}>
-                  <RatingContainer href={`/user/${rating.user.id}`}>
-                    <RatingHeader>
-                      <Avatar
-                        src={rating.user.avatarURL}
-                        alt={rating.user.name}
-                      />
+                <RatingsList>
+                  {data.ratings.map((rating) => (
+                    <Card key={rating.id}>
+                      <RatingContainer href={`/user/${rating.user.id}`}>
+                        <RatingHeader>
+                          <Avatar
+                            src={rating.user.avatarURL}
+                            alt={rating.user.name}
+                          />
 
-                      <UserData>
-                        <span>{rating.user.name}</span>
-                        <time
-                          title={formatDateToString(new Date(rating.createdAt))}
-                          dateTime={new Date(rating.createdAt).toISOString()}
-                        >
-                          {formatDateDistanceToNow(new Date(rating.createdAt))}
-                        </time>
-                      </UserData>
+                          <UserData>
+                            <span>{rating.user.name}</span>
+                            <time
+                              title={formatDateToString(
+                                new Date(rating.createdAt),
+                              )}
+                              dateTime={new Date(
+                                rating.createdAt,
+                              ).toISOString()}
+                            >
+                              {formatDateDistanceToNow(
+                                new Date(rating.createdAt),
+                              )}
+                            </time>
+                          </UserData>
 
-                      <RatingStars rate={rating.rate} />
-                    </RatingHeader>
+                          <RatingStars rate={rating.rate} />
+                        </RatingHeader>
 
-                    <p>{rating.description}</p>
-                  </RatingContainer>
-                </Card>
-              ))}
-            </RatingsList>
-          </RatingsSection>
-        </DialogContent>
+                        <p>{rating.description}</p>
+                      </RatingContainer>
+                    </Card>
+                  ))}
+                </RatingsList>
+              </RatingsSection>
+            </DialogContent>
+          </>
+        )}
       </DialogPortal>
     </DialogRoot>
   )

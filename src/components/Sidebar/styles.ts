@@ -32,8 +32,42 @@ export const Navbar = styled('nav', {
   minWidth: 100,
 })
 
-export const Login = styled(Link, {
+export const LoginLink = styled(Link, {
   display: 'flex',
   alignItems: 'center',
   gap: '$3',
+})
+
+export const ProfileContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$3',
+  width: '100%',
+})
+
+export const ProfileLink = styled(Link, {
+  display: 'flex',
+  alignItems: 'center',
+  flexGrow: 1,
+  gap: '$3',
+})
+
+export const LogoutButton = styled('button', {
+  all: 'unset',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '$2',
+  borderRadius: '$sm',
+  background: 'transparent',
+  cursor: 'pointer',
+
+  '&:hover': {
+    background: '$gray600',
+  },
+
+  svg: {
+    color: '$red',
+    width: 20,
+    height: 20,
+  },
 })
