@@ -1,4 +1,5 @@
 import { CaretRight, ChartLineUp } from '@phosphor-icons/react'
+import { useSession } from 'next-auth/react'
 import { ActionLink } from '@/components/ActionLink'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { RatingsList } from './components/RatingList'
@@ -66,6 +67,9 @@ export function Home({
   ratings,
   recommendations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const session = useSession()
+  console.log({ session })
+
   return (
     <DefaultLayout>
       <Container>
