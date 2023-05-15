@@ -4,10 +4,10 @@ export const Card = styled('div', {
   width: '100%',
   borderRadius: '$md',
   background: '$gray700',
-  border: '2px solid $colors$gray700',
+  border: '2px solid $gray700',
 
   '&:hover': {
-    border: '2px solid $colors$gray600',
+    border: '2px solid $gray600',
   },
 
   variants: {
@@ -22,10 +22,10 @@ export const Card = styled('div', {
     highlighted: {
       true: {
         background: '$gray600',
-        border: '2px solid $colors$gray600',
+        border: '2px solid $gray600',
 
         '&:hover': {
-          border: '2px solid $colors$gray500',
+          border: '2px solid $gray500',
         },
       },
     },

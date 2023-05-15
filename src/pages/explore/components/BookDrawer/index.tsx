@@ -33,6 +33,8 @@ import {
   UserData,
 } from './styles'
 import { LoginDialog } from '../LoginDialog'
+import { useSession } from 'next-auth/react'
+import { RatingForm } from '../RatingForm'
 
 const nunitoSans = Nunito_Sans({ subsets: ['latin'], weight: ['400', '700'] })
 
@@ -71,6 +73,9 @@ export function BookDrawer({
   onClose,
 }: BookDrawerContentProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
+  const [isRatingFormOpen, setIsRatingFormOpen] = useState(false)
+
+  const { data: session } = useSession()
 
   const { data } = useQuery<Book>({
     queryKey: ['books', bookId],
@@ -168,12 +173,21 @@ export function BookDrawer({
                 <RatingsTitle>
                   <h3>Avaliações</h3>
 
-                  <LoginDialog>
-                    <button>Avaliar</button>
-                  </LoginDialog>
+                  {!isRatingFormOpen &&
+                    (session ? (
+                      <button onClick={() => setIsRatingFormOpen(true)}>
+                        Avaliar
+                      </button>
+                    ) : (
+                      <LoginDialog>
+                        <button>Avaliar</button>
+                      </LoginDialog>
+                    ))}
                 </RatingsTitle>
 
                 <RatingsList>
+                  {isRatingFormOpen && <RatingForm />}
+
                   {data.ratings.map((rating) => (
                     <Card key={rating.id}>
                       <RatingContainer href={`/user/${rating.user.id}`}>
