@@ -1,24 +1,8 @@
 import Image from 'next/image'
-import Link from 'next/link'
-import { signIn } from 'next-auth/react'
-import GoogleIcon from '@/assets/icons/google-icon.svg'
-import GitHubIcon from '@/assets/icons/github-icon.svg'
-import RocketIcon from '@/assets/icons/rocket-icon.svg'
-import {
-  Container,
-  Hero,
-  LoginContainer,
-  LoginOptions,
-  WelcomeContainer,
-} from './styles'
+import { LoginOptions } from '@/components/LoginOptions'
+import { Container, Hero, LoginContainer, WelcomeContainer } from './styles'
 
 export default function Login() {
-  function handleSignIn(provider: 'google' | 'github') {
-    signIn(provider, {
-      callbackUrl: '/',
-    })
-  }
-
   return (
     <Container>
       <Hero>
@@ -36,22 +20,7 @@ export default function Login() {
           <span>Faça seu login ou acesse como visitante.</span>
         </WelcomeContainer>
 
-        <LoginOptions>
-          <button onClick={() => handleSignIn('google')}>
-            <Image src={GoogleIcon} alt="Icone do Google" />
-            Entrar com o Google
-          </button>
-
-          <button onClick={() => handleSignIn('github')}>
-            <Image src={GitHubIcon} alt="Icone do GitHub" />
-            Entrar com o GitHub
-          </button>
-
-          <Link href="/">
-            <Image src={RocketIcon} alt="Icone de foguete" />
-            Acessar como visitante
-          </Link>
-        </LoginOptions>
+        <LoginOptions />
       </LoginContainer>
     </Container>
   )
