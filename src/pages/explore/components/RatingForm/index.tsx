@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, Star, X } from '@phosphor-icons/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Avatar } from '@/components/Avatar'
 import { TextArea } from '@/components/Forms/TextArea'
 import { api } from '@/lib/axios'
@@ -17,7 +19,6 @@ import {
   RadioGroupRoot,
   SubmitContainer,
 } from './styles'
-import { useRouter } from 'next/router'
 
 const createRatingSchema = z.object({
   rate: z
@@ -37,7 +38,9 @@ interface RatingFormProps {
 
 export function RatingForm({ onClose }: RatingFormProps) {
   const { data: session } = useSession()
+
   const router = useRouter()
+  const bookId = String(router.query.bookId)
 
   const {
     control,
@@ -48,15 +51,26 @@ export function RatingForm({ onClose }: RatingFormProps) {
     resolver: zodResolver(createRatingSchema),
   })
 
-  async function handleCreateRating(data: CreateRatingFormData) {
-    const bookId = String(router.query.bookId)
+  const queryClient = useQueryClient()
 
-    await api.post('/ratings', {
-      rate: data.rate,
-      description: data.description,
-      userId: session?.user.id,
-      bookId,
-    })
+  const mutation = useMutation({
+    mutationFn: async (data: CreateRatingFormData) => {
+      await api.post('/ratings', {
+        rate: data.rate,
+        description: data.description,
+        userId: session?.user.id,
+        bookId,
+      })
+
+      onClose()
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['books', bookId] })
+    },
+  })
+
+  async function handleCreateRating(data: CreateRatingFormData) {
+    mutation.mutate(data)
   }
 
   return (
