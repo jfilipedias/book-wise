@@ -32,7 +32,6 @@ export const RatingContainer = styled('div', {
   time: {
     color: '$gray300',
     fontSize: '$sm',
-    textTransform: 'capitalize',
   },
 })
 
