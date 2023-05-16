@@ -1,3 +1,4 @@
+import * as RadioGroup from '@radix-ui/react-radio-group'
 import { styled } from '@/styles/stitches.config'
 
 export const FormContainer = styled('form', {
@@ -17,6 +18,24 @@ export const Heading = styled('div', {
   strong: {
     color: '$gray100',
     flexGrow: 1,
+  },
+})
+
+export const RadioGroupRoot = styled(RadioGroup.Root, {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$1',
+})
+
+export const RadioGroupItem = styled(RadioGroup.Item, {
+  all: 'unset',
+  background: 'transparent',
+  cursor: 'pointer',
+
+  svg: {
+    color: '$purple100',
+    width: 28,
+    height: 28,
   },
 })
 
