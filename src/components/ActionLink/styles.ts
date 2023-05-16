@@ -9,11 +9,17 @@ export const LinkContainer = styled(Link, {
   fontSize: '$sm',
   fontWeight: '$bold',
   background: 'transparent',
-  color: '#8381D9',
+  color: '$purple100',
   borderRadius: '$sm',
   transition: 'color 200ms ease',
 
   '&:hover': {
     background: 'rgba(131, 139, 217, 0.06)',
+  },
+
+  svg: {
+    color: '$purple100',
+    width: 16,
+    height: 16,
   },
 })

@@ -11,8 +11,11 @@ import {
   SideList,
   SectionTitle,
   Container,
+  FeedSection,
+  UserRating,
 } from './styles'
 import { InferGetServerSidePropsType } from 'next'
+import { RatingContainer } from '../../components/UserContent/styles'
 
 interface Rating {
   id: string
@@ -68,7 +71,6 @@ export function Home({
   recommendations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const session = useSession()
-  console.log({ session })
 
   return (
     <DefaultLayout>
@@ -79,11 +81,26 @@ export function Home({
 
         <Content>
           <Feed>
-            <SectionTitle>
-              <h2>Avaliações mais recentes</h2>
-            </SectionTitle>
+            {!!session && (
+              <FeedSection>
+                <SectionTitle>
+                  <h2>Sua última avaliação</h2>
 
-            <RatingsList ratings={ratings} />
+                  <ActionLink href="/profile">
+                    Ver todas <CaretRight />
+                  </ActionLink>
+                </SectionTitle>
+
+                <UserRating></UserRating>
+              </FeedSection>
+            )}
+            <FeedSection>
+              <SectionTitle>
+                <h2>Avaliações mais recentes</h2>
+              </SectionTitle>
+
+              <RatingsList ratings={ratings} />
+            </FeedSection>
           </Feed>
 
           <SideList>
@@ -91,7 +108,7 @@ export function Home({
               <h2>Livros populares</h2>
 
               <ActionLink href="/explore">
-                Ver todos <CaretRight size={16} color="#8381D9" />
+                Ver todos <CaretRight />
               </ActionLink>
             </SectionTitle>
 

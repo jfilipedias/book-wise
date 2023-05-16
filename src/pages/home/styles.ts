@@ -28,13 +28,22 @@ const Section = styled('section', {
   gap: '$4',
 })
 
-export const Feed = styled(Section, {
+export const Feed = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$10',
+  flexGrow: 1,
+})
+
+export const FeedSection = styled(Section, {
   flexGrow: 1,
 })
 
 export const SideList = styled(Section, {
   minWidth: 324,
 })
+
+export const UserRating = styled('div', {})
 
 export const SectionTitle = styled('div', {
   display: 'flex',

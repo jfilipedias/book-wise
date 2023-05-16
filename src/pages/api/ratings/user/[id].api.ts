@@ -58,6 +58,9 @@ export default async function handler(
       },
     },
     where,
+    orderBy: {
+      created_at: 'desc',
+    },
   })
 
   const ratingsOutput = ratings.map((rating) => ({

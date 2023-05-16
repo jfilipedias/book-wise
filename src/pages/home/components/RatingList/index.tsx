@@ -14,6 +14,7 @@ import {
   RatingHeader,
   UserData,
 } from './styles'
+import { useSession } from 'next-auth/react'
 
 interface Rating {
   id: string
@@ -37,6 +38,8 @@ interface RatingsListProps {
 }
 
 export function RatingsList({ ratings }: RatingsListProps) {
+  const { data: session } = useSession()
+
   const { data } = useQuery<Rating[]>({
     queryKey: ['ratings'],
     queryFn: async () => {
@@ -48,45 +51,47 @@ export function RatingsList({ ratings }: RatingsListProps) {
 
   return (
     <ListContainer>
-      {data?.map((rating) => (
-        <Card key={rating.id}>
-          <RatingContainer href={`/user/${rating.user.id}`}>
-            <RatingHeader>
-              <Avatar src={rating.user.avatarURL} alt={rating.user.name} />
+      {data
+        ?.filter((rating) => rating.user.id !== session?.user.id)
+        .map((rating) => (
+          <Card key={rating.id}>
+            <RatingContainer href={`/user/${rating.user.id}`}>
+              <RatingHeader>
+                <Avatar src={rating.user.avatarURL} alt={rating.user.name} />
 
-              <UserData>
-                <span>{rating.user.name}</span>
-                <time
-                  title={formatDateToString(new Date(rating.createdAt))}
-                  dateTime={new Date(rating.createdAt).toISOString()}
-                >
-                  {formatDateDistanceToNow(new Date(rating.createdAt))}
-                </time>
-              </UserData>
+                <UserData>
+                  <span>{rating.user.name}</span>
+                  <time
+                    title={formatDateToString(new Date(rating.createdAt))}
+                    dateTime={new Date(rating.createdAt).toISOString()}
+                  >
+                    {formatDateDistanceToNow(new Date(rating.createdAt))}
+                  </time>
+                </UserData>
 
-              <RatingStars rate={rating.rate} />
-            </RatingHeader>
+                <RatingStars rate={rating.rate} />
+              </RatingHeader>
 
-            <RatingBody>
-              <Image
-                src={rating.book.coverURL}
-                alt={rating.book.name}
-                width={108}
-                height={152}
-              />
+              <RatingBody>
+                <Image
+                  src={rating.book.coverURL}
+                  alt={rating.book.name}
+                  width={108}
+                  height={152}
+                />
 
-              <RatingBodyContent>
-                <BookInfos>
-                  <strong>{rating.book.name}</strong>
-                  <span>{rating.book.author}</span>
-                </BookInfos>
+                <RatingBodyContent>
+                  <BookInfos>
+                    <strong>{rating.book.name}</strong>
+                    <span>{rating.book.author}</span>
+                  </BookInfos>
 
-                <p>{rating.description}</p>
-              </RatingBodyContent>
-            </RatingBody>
-          </RatingContainer>
-        </Card>
-      ))}
+                  <p>{rating.description}</p>
+                </RatingBodyContent>
+              </RatingBody>
+            </RatingContainer>
+          </Card>
+        ))}
     </ListContainer>
   )
 }

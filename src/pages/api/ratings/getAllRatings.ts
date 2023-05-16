@@ -19,6 +19,9 @@ export async function getAllRatings(req: NextApiRequest, res: NextApiResponse) {
         },
       },
     },
+    orderBy: {
+      created_at: 'desc',
+    },
   })
 
   const ratingsOutput = ratings.map((rating) => ({
