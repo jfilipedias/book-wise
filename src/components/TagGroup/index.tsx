@@ -1,6 +1,6 @@
 import { Item, Root } from './styles'
 
-export const RadioGroup = {
+export const TagGroup = {
   Root,
   Item,
 }

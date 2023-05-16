@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { Card } from '@/components/Card'
-import { RadioGroup } from '@/components/Forms/RadioGroup'
+import { TagGroup } from '@/components/TagGroup'
 import { TextInput } from '@/components/Forms/TextInput'
 import { RatingStars } from '@/components/RatingStars'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -166,18 +166,18 @@ export default function Explore({
             </TextInput.Root>
           </Search>
 
-          <RadioGroup.Root
+          <TagGroup.Root
             defaultValue={selectedCategory}
             onValueChange={handleSelectedCategoryChange}
           >
-            <RadioGroup.Item value="">Todos</RadioGroup.Item>
+            <TagGroup.Item value="">Todos</TagGroup.Item>
 
             {categories.map((category) => (
-              <RadioGroup.Item key={category.id} value={category.id}>
+              <TagGroup.Item key={category.id} value={category.id}>
                 {category.name}
-              </RadioGroup.Item>
+              </TagGroup.Item>
             ))}
-          </RadioGroup.Root>
+          </TagGroup.Root>
         </Header>
 
         <ListContainer>
