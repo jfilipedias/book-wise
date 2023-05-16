@@ -45,7 +45,7 @@ export const ProfileContainer = styled('div', {
   width: '100%',
 })
 
-export const ProfileLink = styled(Link, {
+export const ProfileInfo = styled('div', {
   display: 'flex',
   alignItems: 'center',
   flexGrow: 1,

@@ -1,6 +1,12 @@
 import Image from 'next/image'
 import { signOut, useSession } from 'next-auth/react'
-import { Binoculars, ChartLineUp, SignIn, SignOut } from '@phosphor-icons/react'
+import {
+  Binoculars,
+  ChartLineUp,
+  SignIn,
+  SignOut,
+  User,
+} from '@phosphor-icons/react'
 import LogoImage from '@/assets/logo.svg'
 import { NavLink } from '@/components/NavLink'
 import { Avatar } from '@/components/Avatar'
@@ -10,7 +16,7 @@ import {
   LogoutButton,
   Navbar,
   ProfileContainer,
-  ProfileLink,
+  ProfileInfo,
 } from './styles'
 
 export function Sidebar() {
@@ -28,19 +34,25 @@ export function Sidebar() {
           <NavLink href="/explore">
             <Binoculars size={24} /> Explorar
           </NavLink>
+
+          {!!session && (
+            <NavLink href="/profile">
+              <User size={24} /> Perfil
+            </NavLink>
+          )}
         </Navbar>
       </section>
 
       {!!session ? (
         <ProfileContainer>
-          <ProfileLink href="/profile">
+          <ProfileInfo>
             <Avatar
               src={session.user.avatar_url}
               alt={session.user.name}
               size="sm"
             />
             <span>{session.user.name.split(' ')[0]}</span>
-          </ProfileLink>
+          </ProfileInfo>
 
           <LogoutButton title="Sair" onClick={() => signOut()}>
             <SignOut />
