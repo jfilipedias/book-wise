@@ -10,7 +10,7 @@ export const FormContainer = styled('form', {
   background: '$gray700',
 })
 
-export const Heading = styled('div', {
+export const FormHeading = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '$4',
@@ -19,6 +19,12 @@ export const Heading = styled('div', {
     color: '$gray100',
     flexGrow: 1,
   },
+})
+
+export const FormBody = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
 })
 
 export const RadioGroupRoot = styled(RadioGroup.Root, {
@@ -39,6 +45,14 @@ export const RadioGroupItem = styled(RadioGroup.Item, {
   },
 })
 
+export const FormErrors = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$2',
+  fontSize: '$sm',
+  color: '$red',
+})
+
 export const SubmitContainer = styled('div', {
   display: 'flex',
   alignItems: 'center',
@@ -54,6 +68,10 @@ const Button = styled('button', {
   borderRadius: '$sm',
   background: '$gray600',
   cursor: 'pointer',
+
+  '&:disabled': {
+    cursor: 'not-allowed',
+  },
 
   svg: {
     width: 24,

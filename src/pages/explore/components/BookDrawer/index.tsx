@@ -98,6 +98,7 @@ export function BookDrawer({
 
     if (typeof onClose !== 'undefined' && !open) {
       onClose()
+      setIsRatingFormOpen(false)
     }
 
     if (typeof onOpen !== 'undefined' && open) {
@@ -186,7 +187,9 @@ export function BookDrawer({
                 </RatingsTitle>
 
                 <RatingsList>
-                  {isRatingFormOpen && <RatingForm />}
+                  {isRatingFormOpen && (
+                    <RatingForm onCancel={() => setIsRatingFormOpen(false)} />
+                  )}
 
                   {data.ratings.map((rating) => (
                     <Card key={rating.id}>

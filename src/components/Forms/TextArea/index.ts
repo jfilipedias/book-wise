@@ -11,6 +11,10 @@ export const TextArea = styled('textarea', {
   color: '$gray200',
   resize: 'vertical',
 
+  '&::placeholder': {
+    color: '$gray400',
+  },
+
   '&:focus': {
     outline: 0,
     borderColor: '$green200',
