@@ -45,6 +45,12 @@ export const SideList = styled(Section, {
 
 export const UserRating = styled('div', {})
 
+export const UserRatingInfo = styled('div', {})
+
+export const UserRatingInfoHeading = styled('div', {})
+
+export const UserRatingBook = styled('div', {})
+
 export const SectionTitle = styled('div', {
   display: 'flex',
   alignItems: 'center',

@@ -47,8 +47,6 @@ export const getServerSideProps = async ({
     }
   }
 
-  console.log('userId', session.user.id)
-
   const userInfoResponse = await fetch(
     `http://localhost:3000/api/users/${session.user.id}`,
   )
