@@ -86,11 +86,15 @@ export function BookDrawer({
   })
 
   let averageRate = 0
+  let alreadyRated = false
 
   if (data) {
     averageRate =
       data?.ratings.reduce((acc, rating) => acc + rating.rate, 0) /
       data?.ratings.length
+    alreadyRated = data.ratings.some(
+      (rating) => rating.user.id === session?.user.id,
+    )
   }
 
   function handleOpenChange(open: boolean) {
@@ -174,7 +178,7 @@ export function BookDrawer({
                 <RatingsTitle>
                   <h3>Avaliações</h3>
 
-                  {!isRatingFormOpen &&
+                  {!(isRatingFormOpen || alreadyRated) &&
                     (session ? (
                       <button onClick={() => setIsRatingFormOpen(true)}>
                         Avaliar
@@ -188,12 +192,18 @@ export function BookDrawer({
 
                 <RatingsList>
                   {isRatingFormOpen && (
-                    <RatingForm onCancel={() => setIsRatingFormOpen(false)} />
+                    <RatingForm onClose={() => setIsRatingFormOpen(false)} />
                   )}
 
                   {data.ratings.map((rating) => (
                     <Card key={rating.id}>
-                      <RatingContainer href={`/user/${rating.user.id}`}>
+                      <RatingContainer
+                        href={
+                          rating.user.id === session?.user.id
+                            ? '/profile'
+                            : `/user/${rating.user.id}`
+                        }
+                      >
                         <RatingHeader>
                           <Avatar
                             src={rating.user.avatarURL}

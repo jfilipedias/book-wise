@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, Star, X } from '@phosphor-icons/react'
 import { Avatar } from '@/components/Avatar'
 import { TextArea } from '@/components/Forms/TextArea'
+import { api } from '@/lib/axios'
 import {
   CancelButton,
   ConfirmButton,
@@ -16,6 +17,7 @@ import {
   RadioGroupRoot,
   SubmitContainer,
 } from './styles'
+import { useRouter } from 'next/router'
 
 const createRatingSchema = z.object({
   rate: z
@@ -30,11 +32,12 @@ const createRatingSchema = z.object({
 type CreateRatingFormData = z.infer<typeof createRatingSchema>
 
 interface RatingFormProps {
-  onCancel: () => void
+  onClose: () => void
 }
 
-export function RatingForm({ onCancel }: RatingFormProps) {
+export function RatingForm({ onClose }: RatingFormProps) {
   const { data: session } = useSession()
+  const router = useRouter()
 
   const {
     control,
@@ -46,7 +49,14 @@ export function RatingForm({ onCancel }: RatingFormProps) {
   })
 
   async function handleCreateRating(data: CreateRatingFormData) {
-    console.log({ data })
+    const bookId = String(router.query.bookId)
+
+    await api.post('/ratings', {
+      rate: data.rate,
+      description: data.description,
+      userId: session?.user.id,
+      bookId,
+    })
   }
 
   return (
@@ -88,7 +98,7 @@ export function RatingForm({ onCancel }: RatingFormProps) {
         )}
 
         <SubmitContainer>
-          <CancelButton type="button" title="Cancelar" onClick={onCancel}>
+          <CancelButton type="button" title="Cancelar" onClick={onClose}>
             <X />
           </CancelButton>
 
