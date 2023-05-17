@@ -9,8 +9,9 @@ import { Container } from './styles'
 
 export function LoginOptions() {
   const router = useRouter()
+  const currentPath = router.asPath
 
-  const callbackUrl = router.asPath
+  const callbackUrl = currentPath === '/login' ? '/' : currentPath
 
   function handleSignIn(provider: 'google' | 'github') {
     signIn(provider, { callbackUrl })
