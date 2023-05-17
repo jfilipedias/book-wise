@@ -43,13 +43,45 @@ export const SideList = styled(Section, {
   minWidth: 324,
 })
 
-export const UserRating = styled('div', {})
+export const UserRating = styled('div', {
+  display: 'flex',
+  gap: '$6',
+  padding: '$5 $6',
+  background: '$gray600',
+  borderRadius: '$md',
+})
 
-export const UserRatingInfo = styled('div', {})
+export const UserRatingInfo = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$3',
+  flexGrow: 1,
+})
 
-export const UserRatingInfoHeading = styled('div', {})
+export const UserRatingInfoHeading = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
+  color: '$gray300',
 
-export const UserRatingBook = styled('div', {})
+  time: {
+    fontSize: '$sm',
+  },
+})
+
+export const UserRatingBook = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  marginBottom: '$3',
+
+  strong: {
+    color: '$gray100',
+  },
+
+  span: {
+    color: '$gray400',
+    fontSize: '$sm',
+  },
+})
 
 export const SectionTitle = styled('div', {
   display: 'flex',
