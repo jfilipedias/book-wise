@@ -1,8 +1,9 @@
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import Head from 'next/head'
 import { CaretLeft } from '@phosphor-icons/react'
 import { UserContent } from '@/components/UserContent'
 import { DefaultLayout } from '@/layout/DefaultLayout'
 import { BackButton, Container } from './styled'
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 
 interface UserInfo {
   name: string
@@ -54,15 +55,21 @@ export default function User({
   ratings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <DefaultLayout>
-      <Container>
-        <BackButton>
-          <CaretLeft />
-          Voltar
-        </BackButton>
+    <>
+      <Head>
+        <title>{`${userInfo.name} | Book Wise`}</title>
+      </Head>
 
-        <UserContent userInfo={userInfo} ratings={ratings} />
-      </Container>
-    </DefaultLayout>
+      <DefaultLayout>
+        <Container>
+          <BackButton>
+            <CaretLeft />
+            Voltar
+          </BackButton>
+
+          <UserContent userInfo={userInfo} ratings={ratings} />
+        </Container>
+      </DefaultLayout>
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import Head from 'next/head'
 import { getServerSession } from 'next-auth'
 import { User } from '@phosphor-icons/react'
 import { UserContent } from '@/components/UserContent'
@@ -70,15 +71,21 @@ export default function Profile({
   ratings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <DefaultLayout>
-      <Container>
-        <HeadingContainer>
-          <User />
-          <h1>Perfil</h1>
-        </HeadingContainer>
+    <>
+      <Head>
+        <title>Perfil | Book Wise</title>
+      </Head>
 
-        <UserContent userInfo={userInfo} ratings={ratings} isProfile />
-      </Container>
-    </DefaultLayout>
+      <DefaultLayout>
+        <Container>
+          <HeadingContainer>
+            <User />
+            <h1>Perfil</h1>
+          </HeadingContainer>
+
+          <UserContent userInfo={userInfo} ratings={ratings} isProfile />
+        </Container>
+      </DefaultLayout>
+    </>
   )
 }

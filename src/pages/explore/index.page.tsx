@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Binoculars, MagnifyingGlass } from '@phosphor-icons/react'
@@ -146,72 +147,78 @@ export default function Explore({
   }, [selectedCategory, debouncedSearch, selectedBook])
 
   return (
-    <DefaultLayout>
-      <Container>
-        <Header>
-          <Search>
-            <Binoculars size={32} color="#50B2C0" />
+    <>
+      <Head>
+        <title>Explorar | Book Wise</title>
+      </Head>
 
-            <h1>Explorar</h1>
+      <DefaultLayout>
+        <Container>
+          <Header>
+            <Search>
+              <Binoculars size={32} color="#50B2C0" />
 
-            <TextInput.Root>
-              <TextInput.Input
-                placeholder="Buscar livro ou autor"
-                value={search}
-                onChange={handleSearchChange}
-              />
-              <TextInput.Icon>
-                <MagnifyingGlass />
-              </TextInput.Icon>
-            </TextInput.Root>
-          </Search>
+              <h1>Explorar</h1>
 
-          <TagGroup.Root
-            defaultValue={selectedCategory}
-            onValueChange={handleSelectedCategoryChange}
-          >
-            <TagGroup.Item value="">Todos</TagGroup.Item>
+              <TextInput.Root>
+                <TextInput.Input
+                  placeholder="Buscar livro ou autor"
+                  value={search}
+                  onChange={handleSearchChange}
+                />
+                <TextInput.Icon>
+                  <MagnifyingGlass />
+                </TextInput.Icon>
+              </TextInput.Root>
+            </Search>
 
-            {categories.map((category) => (
-              <TagGroup.Item key={category.id} value={category.id}>
-                {category.name}
-              </TagGroup.Item>
-            ))}
-          </TagGroup.Root>
-        </Header>
-
-        <ListContainer>
-          {data?.map((book) => (
-            <BookDrawer
-              key={book.id}
-              bookId={book.id}
-              defaultOpen={selectedBook === book.id}
-              onOpen={() => setSelectedBook(book.id)}
-              onClose={() => setSelectedBook('')}
+            <TagGroup.Root
+              defaultValue={selectedCategory}
+              onValueChange={handleSelectedCategoryChange}
             >
-              <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
-                <BookContainer>
-                  <Image
-                    src={book.coverURL}
-                    alt={book.name}
-                    width={108}
-                    height={152}
-                  />
+              <TagGroup.Item value="">Todos</TagGroup.Item>
 
-                  <BookContent>
-                    <BookInfos>
-                      <strong>{book.name}</strong>
-                      <span>{book.author}</span>
-                    </BookInfos>
+              {categories.map((category) => (
+                <TagGroup.Item key={category.id} value={category.id}>
+                  {category.name}
+                </TagGroup.Item>
+              ))}
+            </TagGroup.Root>
+          </Header>
 
-                    <RatingStars rate={book.averageRate} />
-                  </BookContent>
-                </BookContainer>
-              </Card>
-            </BookDrawer>
-          ))}
-        </ListContainer>
-      </Container>
-    </DefaultLayout>
+          <ListContainer>
+            {data?.map((book) => (
+              <BookDrawer
+                key={book.id}
+                bookId={book.id}
+                defaultOpen={selectedBook === book.id}
+                onOpen={() => setSelectedBook(book.id)}
+                onClose={() => setSelectedBook('')}
+              >
+                <Card size="sm" as="button" css={{ cursor: 'pointer' }}>
+                  <BookContainer>
+                    <Image
+                      src={book.coverURL}
+                      alt={book.name}
+                      width={108}
+                      height={152}
+                    />
+
+                    <BookContent>
+                      <BookInfos>
+                        <strong>{book.name}</strong>
+                        <span>{book.author}</span>
+                      </BookInfos>
+
+                      <RatingStars rate={book.averageRate} />
+                    </BookContent>
+                  </BookContainer>
+                </Card>
+              </BookDrawer>
+            ))}
+          </ListContainer>
+        </Container>
+      </DefaultLayout>
+    </>
   )
 }
