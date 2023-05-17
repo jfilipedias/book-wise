@@ -40,7 +40,7 @@ export const getServerSideProps = async ({
 
   console.log({ session })
 
-  let userLastRating: Rating | undefined = undefined
+  let userLastRating: Rating | null = null
 
   try {
     const ratingsResponse = await fetch('http://localhost:3000/api/ratings')
