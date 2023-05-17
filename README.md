@@ -3,7 +3,13 @@
 ![Autor](https://img.shields.io/badge/developer-jfilipedias-blue)
 ![Licença](https://img.shields.io/github/license/jfilipedias/book-wise)
 
-O BookWise é uma plataforma desenvolvida com [Next.js](https://nextjs.org) para recomendações de livro para leitores onde eles podem avaliar e ver avaliações de outros leitores sobre os mais diversos livros.
+O BookWise é uma plataforma desenvolvida com [Next.js](https://nextjs.org) para avaliações de livros onde os leitores podem avaliar os mais diversos livros. Uma vez que a aplicação realiza autenticação por meio do padrão OAuth, é possível realizar login por meio de sua conta do Google ou GitHub.
+
+Por se tratar de uma aplicação full-stack, foi desenvolvido um back-end por meio das API routes do [Next.js](https://nextjs.org) com uso do ORM [Prisma](https://prisma.io/) para auxiliar na comunicação com o banco de dados [SQLite](https://sqlite.org/).
+
+Durante o desenvolvimento da aplicação foram adicionadas algumas funcionalidades para auxiliar na experiência de uso, como `debounce` para otimização das buscas. Também foi implementada a persistência dos filtros de buscas na rota da aplicação, de modo que o usuário consiga compartilhar sua pesquisa com outros. Sendo assim, até mesmo `Dialogs` permanecem abertas ao realizar o refresh da aplicação ou ao compartilhar sua URL. 
+
+![Interface da aplicação BookWise](./docs/cover.png)
 
 ## Getting started
 
@@ -13,7 +19,7 @@ Inicie instalando as dependências do projeto:
 pnpm i
 ```
 
-Para executar o projeto, é necessário configurar corretamente as variáveis de ambiente como exemplificado nesse [arquivo](./.env.example). Abaixo são descritos o uso de cada variável.
+Para executar o projeto, é necessário configurar corretamente as variáveis de ambiente como exemplificado no [arquivo .env.example](./.env.example). Abaixo são descritos o uso de cada variável.
 
 O projeto utiliza o ORM [Prisma](https://prisma.io/) e para isso é necessário estabelecer a conexão com o banco e executar as migrations:
 
@@ -54,7 +60,7 @@ pnpm i
 ## Tecnologias
 
 - [Axios](https://axios-http.com)
-- [Day.js](https://day.js.org/)
+- [date-fns](https://date-fns.org/)
 - [ESLint](https://eslint.org/)
 - [Next.js](https://nextjs.org/)
 - [NextAuth.js](https://next-auth.js.org/)
@@ -62,6 +68,7 @@ pnpm i
 - [Prisma](https://prisma.io/)
 - [React Hook Form](https://react-hook-form.com/)
 - [ReactJS](https://reactjs.org/)
+- [SQLite](https://sqlite.org/)
 - [Stitches](https://stitches.dev/)
 - [TanStack Query](https://tanstack.com/query)
 - [Typescript](https://typescriptlang.org/)
